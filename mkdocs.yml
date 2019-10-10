@@ -531,6 +531,7 @@ nav:
     - Data management: wp/data-management.md
     - Data recovery for kdb+tick: wp/data-recovery.md
     - Data visualization: wp/data-visualization/index.md
+    # - Disaster management: wp/disaster-management/index.md
     - Disaster recovery: wp/disaster-recovery/index.md
     - Distributed systems: wp/query-interface.md
     - EmbedPy and LASSO:  wp/embedpy-lasso/index.md
@@ -556,6 +557,7 @@ nav:
     - Query scaling: wp/query-scaling.md
     - Real-time tick subscribers: wp/rt-tick/index.md
     - Time-series simplification: wp/ts-shrink/index.md
+    - Transaction-cost analysis: wp/transaction-cost.md
     - Signal processing and q: wp/signal-processing/index.md
     - Socket sharding: wp/socket-sharding/index.md
     - Space weather: wp/space-weather/index.md
@@ -573,7 +575,7 @@ nav:
       - Miscellaneous: about/sg/miscellaneous.md
       - Style: about/sg/style.md
       - Typography: about/sg/typography.md
-      - Terminology: about/sg/terminology.md
+    - Terminology: about/terminology.md
     - License agreements:
       - AWS: license/aws.md
       - GCP: license/gcp.md
