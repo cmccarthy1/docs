@@ -12,15 +12,15 @@ keywords: machine learning, ml, ai, automated, preprocessing, postprocessing, fe
 <i class="fab fa-github"></i>
 [KxSystems/ml](https://github.com/kxsystems/automl/)
 
-The automated machine learning platform described here is built largely on the tools available within the [machine learning toolkit](../toolkit/ml/toolkit). The purpose of this platform is to provide users with the ability to automate the process of applying machine learning techniques to real-world problems. In the absence of expert machine learning engineers this handles the following processes within a traditional workflow.
+The automated machine learning platform described here is built largely on the tools available within the [machine learning toolkit](../toolkit/ml/toolkit). The purpose of this platform is to provide users with the ability to automate the process of applying machine learning techniques to real-world problems. In the absence of expert machine learning engineers, this platform handles the following processes within a traditional workflow:
 
 1. Data preprocessing
 2. Feature engineering and feature selection
 3. Model selection
-4. Hyperparameter Tuning 
+4. Hyperparameter tuning 
 5. Report generation and model persistence
 
-Each of these steps is outlined in depth within the documentation on this website. This allows users to understand the processes by which decisions are being made and the transformations which their data undergo during the production of the output models.
+Each step is outlined in detail on this website. This allows users to understand the processes by which decisions are being made and the transformations which are applied to their data during the production of the output models.
 
 At present the machine learning frameworks supported for this are based on:
 
@@ -28,7 +28,7 @@ At present the machine learning frameworks supported for this are based on:
 2. [FRESH](../toolkit/ml/fresh) based feature extraction and model production
 
 
-Over time the functionality available and the problems which can be solved using this library will be extended to include;
+Over time the functionality available and the problems which can be solved using this library will be extended to include:
 
 -   Time-series use-cases and architectures
 -   Natural Language Processing frameworks
