@@ -45,7 +45,7 @@ AdaBoostRegressor         | sklearn   ;   ensemble    ;   seed   ; reg
 RandomForestRegressor     | sklearn   ;   ensemble    ;   seed   ; reg
 KNeighborsRegressor       | sklearn   ;   neighbors   ;    ::    ; reg
 ```
-To understand the above structure take for example the following embedpy code
+To understand the above structure take for example the following embedPy code
 ```q
 q)seed:42
 q)mdl:.p.import[`sklearn.ensemble][`:AdaBoostRegressor][`random_state pykw seed]
@@ -53,7 +53,7 @@ q)mdl:.p.import[`sklearn.ensemble][`:AdaBoostRegressor][`random_state pykw seed]
 
 This defines a model from pythons `sklearn` library, with the associated submodule `ensemble`, named `AdaBoostRegressor` which can be seeded with a random state `seed`, to ensure that runs of the model can be reproducible. If the model does not take a `random_state`, the input to this is set to `::`.
 
-The following would be the table modified to include a Bayesian ridge regressor which is not included by default.
+The following would be the table modified to include a Bayesian ridge regressor (not included by default).
 
 ```q
 Model name                | library   ;  sub-module    ;  seeded?  ; problem type
@@ -64,7 +64,13 @@ KNeighborsRegressor       | sklearn   ;   neighbors    ;    ::     ; reg
 BayesianRidge             | sklearn   ;  linear_model  ;    ::     ; reg
 ```
 
+<<<<<<< HEAD
 3 - If a grid search is to be performed on the model, a user must add the model associated hyperparameters over which to perform this to the file `code/models/hyperparams.txt`, if not then the model name must be added to `.aml.i.excludelist` within `code/utils.q`. The following is an example of the hyperparameters which could be added for the Bayesian ridge regressor
+=======
+3 - If a grid search is to be performed on the model a user must add the hyperparameters over which to perform this to the file `code/models/hyperparams.txt`. **If not** then the model name **must** be added to `.aml.i.excludelist` within `code/utils.q`.
+
+The following is an example of the hyperparameters which could be added for the Bayesian ridge regressor
+>>>>>>> e81005c6c522cb682ed638e88ab5420ddd3165bf
 
 ```q
 BayesianRidge  |n_iter=100 200 300;tol=0.001 0.005 0.01
@@ -77,7 +83,11 @@ The addition of custom keras models is slightly more involved than that performe
 1 - Open the file `code/models/kerasmdls.q`
 
 
+<<<<<<< HEAD
 2 - Follow the naming convention [model-name]{mdl/fit/predict} to create function which defines the model to be used, fits the model to the training data and predicts the value of the target. Ensure that the functions are defined in the root of the `.aml` namespace (this is already handled if within the `kerasmdls.q` file)
+=======
+2 - Follow the naming convention `[model-name]{mdl/fit/predict}` to create functions which define, the model to be used, fits the model and predicts the value of the target. A user must ensure that the functions are defined in the root of the `.aml` namespace (this is handled if within the `kerasmdls.q` file)
+>>>>>>> e81005c6c522cb682ed638e88ab5420ddd3165bf
 
 ```q
 $vi kerasmdls.q
@@ -134,4 +144,4 @@ customregkeras  | keras      ; customreg  ; seed    ; reg
 
 !!!Note
 	1. display-name is used for display and saving purposes, this is the name that should be added to the `.aml.i.keraslist` in order to be excluded from grid-search
-	2. model-name should coincide with the naming convention used in step 1 for [model-name]{fit/...}
+	2. model-name should coincide with the naming convention used in step 1 for `[model-name]{fit/...}`
