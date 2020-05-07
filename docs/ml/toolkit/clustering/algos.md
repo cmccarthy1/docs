@@ -109,7 +109,7 @@ q).ml.clust.kmeans[d;`mdist;3;10;1b]
 ```
 
 !!! note
-      The distance metrics which can be used with the K-Means algorithm are the euclidean squared distances (`e2dist`,`edist`). The use of any other distance metric will result in a error being flagged.
+      The distance metrics which can be used with the K-Means algorithm are the Euclidean distances (`e2dist`,`edist`). The use of any other distance metric will result in a error being flagged.
 
 ## Connectivity-based models
 
@@ -123,9 +123,9 @@ Two connectivity-based models are provided with this library
 
 	The implementation of hierarchical clustering described below groups data using an agglomerative/bottom-up approach which initially treats all data points as individual clusters.
 
-	There are 5 possible linkages in hierarchical clustering: single, complete, average, centroid and ward. Euclidean or manhattan distances can be used for with each linkage, except for ward which only works with euclidean squared distances. Additionally, a k-d tree has been used for the single and centroid implementations.
+	There are 5 possible linkages in hierarchical clustering: single, complete, average, centroid and ward. Euclidean or manhattan distances can be used for with each linkage, except for ward which only works with Euclidean squared distances. Additionally, a k-d tree has been used for the single and centroid implementations.
 	
-	In the implementations of both functions below, a k-d tree is used in order to store the representative points of each cluster (more information [here](https://code.kx.com/v2/ml/toolkit/clustering/kdtree)). Both q and C implementations of the tree are available (See [kdtree](kdtree.md)). Instructions to build the C code can be found [here](https://github.com/Dianeod/ml-1/blob/cluster/clust/README.md) on the github repo.
+	In the implementations of both functions below, a k-d tree is used in order to store the representative points of each cluster (more information [here](https://code.kx.com/v2/ml/toolkit/clustering/kdtree)). Both q and C implementations of the tree are available (See [kdtree](kdtree.md)). Instructions to build the C code can be found [here](https://github.com/kxsystems/ml/clust/README.md) on the github repo.
 
 ### `.ml.clust.cure`
 
@@ -239,19 +239,19 @@ q).ml.clust.hc[d;`mdist;`ward]
     ![dendro_plot](img/dendrogram_example.png)    
     
 !!! warning
-        * Ward linkage only works in conjunction with euclidean squared distances (`e2dist`). If the user tries to input a different distance metric an error will result, as shown above.
+        * Ward linkage only works in conjunction with Euclidean squared distances (`e2dist`), while Centroid linkage only works with Euclidean distances (`e2dist`,`edist`). If the user tries to input a different distance metric an error will result, as shown above.
 
 	* If the user inputs a linkage function which is not contained within the `.ml.clust.i.ld` dictionary an error will occur.
 
 ### `.ml.clust.dgram2clt`
 
-_Convert dendrogram table produced from hierarchial clustetering to list of clusters_
+_Convert dendrogram table produced from hierarchical clustetering to list of clusters_
 
 Syntax: `.ml.clust.dgram2clt[t;cutcrut;cutval]
 
 Where
 
-- `t` is the dendrogram table produced by the hierarchial clustering functions
+- `t` is the dendrogram table produced by the hierarchical clustering functions
 - `cutcrit` is the cutting criteria when creating cluster groups (`dist or `k)
 - `cutval` is the cutting value of `cutcrit` 
 
