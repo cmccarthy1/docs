@@ -239,7 +239,7 @@ q).ml.clust.hc[d;`mdist;`ward]
     ![dendro_plot](img/dendrogram_example.png)    
     
 !!! warning
-        * Ward linkage only works in conjunction with Euclidean squared distances (`e2dist`), while Centroid linkage only works with Euclidean distances (`e2dist`,`edist`). If the user tries to input a different distance metric an error will result, as shown above.
+        * Ward linkage only works in conjunction with Euclidean squared distances (`e2dist`), while centroid linkage only works with Euclidean distances (`e2dist`,`edist`). If the user tries to input a different distance metric an error will result, as shown above.
 
 	* If the user inputs a linkage function which is not contained within the `.ml.clust.i.ld` dictionary an error will occur.
 
