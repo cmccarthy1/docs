@@ -6,11 +6,11 @@ keywords: machine learning, ml, clustering, k-means, dbscan, hierarchical, cure,
 
 # <i class="fas fa-share-alt"></i> Scoring Metrics
 
-Scoring metrics allow users to validate the performance of their clustering algorithms in three distinct use-cases
+Scoring metrics allow users to validate the performance of their clustering algorithms in three distinct use cases
 
 1. Unsupervised Learning: 
 
-	These metrics analyze how well data has been assigned to clusters, measuring intra-cluster similarity (cohesion) and differences (separation). In general, clustering is said to be successful if clusters are well-spaced and densely packed.
+	These metrics analyze how well data has been assigned to clusters, measuring intra-cluster similarity (cohesion) and differences (separation). In general, clustering is said to be successful if clusters are well spaced and densely packed.
 
 2. Supervised Learning:
 
@@ -33,7 +33,7 @@ The following scoring metrics are provided within this library
 // Supervised Learning
   .homogeneity        Homogeneity score between predictions and actual value
 
-  // Cluster Optimisation
+  // Optimum number of clusters
   .elbow              Distortion scores for increasing numbers of clusters
 ```
 
@@ -86,7 +86,7 @@ Where
 - `df` is the distance function as a symbol, e.g. `e2dist` `edist` `mdist`
 - `clt` is the list of clusters returned by the clustering algorithms in `.ml.clust`
 
-returns the Dunn index, with a value indicating better clustering, where clusters are compact and well-separated.
+returns the Dunn index, with a higher value indicating better clustering, where clusters are well separated and tightly packed.
 
 ```q
 q)show d:2 10#20?10.
