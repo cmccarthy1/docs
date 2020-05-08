@@ -175,15 +175,15 @@ The optimum number of clusters can be found manually in a number of ways using t
 
 The elbow method returns a distortion score for each value of k applied to data, using k-means clustering
 
-Syntax: `.ml.clust.elbow[data;df;k]`
+Syntax: `.ml.clust.elbow[data;df;kmax]`
 
 Where
 
 - `data` represents the points being analyzed in matrix format, where each column is an individual datapoint
-- `df` is the distance function as a symbol, e.g. `e2dist` `edist`.
-- `k` is the maximum number of clusters
+- `df` is the distance function as a symbol, e.g. `e2dist` `edist`
+- `kmax` is the maximum number of clusters
 
-returns the distortion score for each set of clusters produced in k-means with a different value of k.
+returns distortion scores for each set of clusters produced by k-means, with different values of k up to `kmax`
 
 ```q
 q)show d:2 10#20?10.
