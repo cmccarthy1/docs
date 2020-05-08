@@ -6,7 +6,7 @@ keywords: machine learning, ml, clustering, k-means, dbscan, hierarchical, cure
 
 # <i class="fas fa-share-alt"></i> Clustering Algorithms
 
-The clustering library provides q implementations of a number of common clustering algorithms in q.
+The clustering library provides q implementations of a number of common clustering algorithms.
 
 ```txt
 .ml.clust - Clustering Algorithms
@@ -24,7 +24,7 @@ The clustering library provides q implementations of a number of common clusteri
 
 ### `.ml.clust.kmeans`
 
-K-means clustering begins by selecting k data points as cluster centers and assigning data to the cluster with the nearest centre.
+K-means clustering begins by selecting k data points as cluster centers and assigning data to the cluster with the nearest center.
 
 The algorithm follows an iterative refinement process which runs a specified number of times, updating the cluster centers and assigned points at each iteration.
 
@@ -126,7 +126,7 @@ q).ml.clust.dbscan[d;`e2dist;3;.5]
 
 ### `.ml.clust.cure`
 
-CURE clustering is a technique used to deal with datasets containing outliers and clusters of varying sizes and shapes. Each cluster is represented by a specified number of representative points. These points are chosen by taking the the most scattered points in each cluster and shrinking them towards the cluster centre by a fixed amount, known as the compression.
+CURE clustering is a technique used to deal with datasets containing outliers and clusters of varying sizes and shapes. Each cluster is represented by a specified number of representative points. These points are chosen by taking the the most scattered points in each cluster and shrinking them towards the cluster center by a fixed amount, known as the compression.
 
 Syntax: `.ml.clust.cure[data;df;k;n;c]`
 
