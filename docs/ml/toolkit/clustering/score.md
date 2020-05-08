@@ -16,7 +16,7 @@ Scoring metrics allow users to validate the performance of their clustering algo
 
 	If the labels of the dataset are known, clusters can be analysed in a supervised manner by comparing true and predicted labels.
 
-3. Optimum number of cluster:
+3. Optimum number of clusters:
 
 	If the required number of clusters is not known prior to clustering, the **Elbow Method** is used to estimate the optimum number of clusters within the dataset using K-means clustering.
 
@@ -83,7 +83,7 @@ Syntax: `.ml.clust.dunn[data;df;clt]`
 Where
 
 - `data` represents the points being analyzed in matrix format, where each column is an individual datapoint
-- `df` is the distance function as a symbol, e.g. `e2dist` `edist` `mdist` etc.
+- `df` is the distance function as a symbol, e.g. `e2dist` `edist` `mdist`
 - `clt` is the list of clusters returned by the clustering algorithms in `.ml.clust`
 
 returns the Dunn index, with a value indicating better clustering, where clusters are compact and well-separated.
@@ -113,7 +113,7 @@ Syntax: `.ml.clust.silhouette[data;df;clt;isavg]`
 Where
 
 - `data` represents the points being analyzed in matrix format, where each column is an individual datapoint
-- `df` is the distance function as a symbol, e.g. `e2dist` `edist` `mdist` etc.
+- `df` is the distance function as a symbol, e.g. `e2dist` `edist` `mdist`
 - `clt` is the list of clusters returned by the clustering algorithms in `.ml.clust`
 - `isavg` is a boolean - `1b` to return the average coefficient, `0b` to return a list of coefficients
 
