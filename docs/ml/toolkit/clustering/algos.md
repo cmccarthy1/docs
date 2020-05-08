@@ -11,7 +11,7 @@ The clustering library provides q implementations of a number of common clusteri
 ```txt
 .ml.clust - Clustering Algorithms
   .kmeans             K-Means clustering
-  .ap                 Affinity Propogation
+  .ap                 Affinity Propagation
   .dbscan             Density-based clustering
   .hc                 Hierarchical clustering
   .cure               CURE algorithm
@@ -36,7 +36,7 @@ Where
 -   `df` is the distance function: `e2dist` `edist` (see [section](##Distance Metrics))
 -   `k` is the number of clusters
 -   `iter` is the number of iterations to be completed
--   `kpp` is a boolean flag indicating the initialisaton type: The initial cluster points are chosen using the [k-means++](https://en.wikipedia.org/wiki/K-means%2B%2B) algorithm or by selecting k random points using 1b/0b respectively
+-   `kpp` is a boolean flag indicating the initializaton type: random (0b) or using [k-means++](https://en.wikipedia.org/wiki/K-means%2B%2B) (1b)
 
 returns a list indicating the cluster each data point belongs to
 
@@ -55,11 +55,11 @@ q).ml.clust.kmeans[d;`mdist;3;10;1b]
 ```
 
 !!! note
-      The distance metrics which can be used with the K-Means algorithm are the Euclidean distances (`e2dist`,`edist`). The use of any other distance metric will result in a error being flagged.
+      The distance metrics that can be used with the K-Means algorithm are the Euclidean distances (`e2dist`,`edist`). The use of any other distance metric will result in an error being flagged.
 
 ### `.ml.clust.ap`
 
-Affinity Propogation groups data based on the similarity between points and subsequently finds k exemplars which best represent the points in each cluster. The algorithm does not require the user to input the number of clusters, but will determine the optimum solution by exchanging real-valued messages between points until high-valued set of exemplars is produced.
+Affinity Propagation groups data based on the similarity between points and subsequently finds _exemplars_, which best represent the points in each cluster. The algorithm does not require the user to input the number of clusters, but will determine the optimum solution by exchanging real-valued messages between points until a high-valued set of exemplars is produced.
 
 The algorithm uses a user specified damping coefficient to reduce the availability and responsibility of messages passed between points, while a preference value is used to set the diagonal values of the similarity matrix. A more detailed explanation of the algorithm can be found [here](https://towardsdatascience.com/unsupervised-machine-learning-affinity-propagation-algorithm-explained-d1fef85f22c8).
 
@@ -126,7 +126,7 @@ q).ml.clust.dbscan[d;`e2dist;3;.5]
 
 ### `.ml.clust.cure`
 
-CURE clustering is a technique used to deal with datasets containing outliers and clusters of varying sizes and shapes. Each cluster is represented by a specified number of representative points. These points are chosen by taking the the most scattered points in each cluster and shrinking them towards the cluster center by a fixed amount, known as the compression.
+CURE clustering is a technique used to deal with datasets containing outliers and clusters of varying sizes and shapes. Each cluster is represented by a specified number of representative points. These points are chosen by taking the the most scattered points in each cluster and shrinking them towards the cluster center using a compression ratio.
 
 Syntax: `.ml.clust.cure[data;df;k;n;c]`
 
@@ -136,7 +136,7 @@ Where
 - `df`  is the distance function as a symbol: `e2dist` `edist` `mdist` (see [section](##Distance Metrics))
 - `k` is the number of clusters
 - `n` is the number of representative points
-- `c` is the compression
+- `c` is the compression ratio
 
 returns a list indicating the cluster each data point belongs to
 
@@ -172,11 +172,11 @@ i1 i2 dist     n
 
 ### `.ml.clust.hc`
 q)
-Agglomerative hierarchical clustering groups data iteratively, using a bottom-up approach which initially treats all data points as individual clusters.
+Agglomerative hierarchical clustering iteratively groups data, using a bottom-up approach that initially treats all data points as individual clusters.
 
-Tere are 5 possible linkages in hierarchical clustering: single, complete, average, centroid and ward. Euclidean or manhattan distances can be used for with each linkage, except for ward which only works with Euclidean squared distances.
+There are 5 possible linkages in hierarchical clustering: single, complete, average, centroid and ward. Euclidean or manhattan distances can be used with each linkage except for ward, which only works with Euclidean squared distances.
 
-In the single and centroid implementations, a k-d tree is used in order to store the representative points of each cluster (more information [here](kdtree.md)).
+In the single and centroid implementations, a k-d tree is used to store the representative points of each cluster (more information [here](kdtree.md)).
 
 Syntax: `.ml.clust.hc[data;df;lf]`
 
@@ -239,7 +239,7 @@ q).ml.clust.hc[d;`mdist;`ward]
 
 ## Cutting dendrograms
 
-Hierarchical clustering methods (including CURE) produce dendrograms, which can then be _cut_ at a given count (`k`) or distance, in order to produce a clustering.
+Hierarchical clustering methods (including CURE) produce dendrograms, which can then be _cut_ at a given count or distance to produce a clustering.
 
 ### `.ml.clust.hccutk`
 
