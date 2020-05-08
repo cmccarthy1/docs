@@ -15,7 +15,7 @@ Within this toolkit a number of functions are provided to deal with k-d trees.
 ```txt
 .ml.clust.kd - k-d tree functions
   .newtree       Build a k-d tree
-  .nn            Find the nearest neighbour for a given datapoint
+  .nn            Find the nearest neighbor for a given datapoint
   .findleaf      Find the leaf node to which a datapoint belongs  
 ``` 
 
@@ -65,22 +65,22 @@ leaf left self parent children axis midval  idxs
 ```
 
 !!! note
-	The value of `leafsz` can affect the speed when searching for nearest neighbours
+	The value of `leafsz` can affect the speed when searching for nearest neighbors
 
 
 ## `.ml.clust.kd.nn`
 
-_Find the nearest neighbour to a data point, returning the index and distance of the nearest cluster_
+_Find the nearest neighbor to a data point, returning the index and distance of the nearest cluster_
 
 Syntax: `.ml.clust.kd.nn[tree;data;df;xidxs;pt]`
 
 -   `tree` is a k-d tree
 -   `data` represents the points being analyzed in matrix format, where each column is an individual datapoint
 -   `df` is the distance function: `e2dist` `edist` `mdist`
--   `xidxs` are the indices (columns in `data`) to be excluded from the nearest neighbour search ( `()` if any point can be chosen)
+-   `xidxs` are the indices (columns in `data`) to be excluded from the nearest neighbor search ( `()` if any point can be chosen)
 -   `pt` is the floating data point to be searched
 
-returns a dictionary containing the column index in `data` (`closestPoint`) and distance (`closestPoint`) of the nearest neighbour
+returns a dictionary containing the column index in `data` (`closestPoint`) and distance (`closestPoint`) of the nearest neighbor
 
 ```q
 q)show d:2 10#20?10.
@@ -95,7 +95,7 @@ leaf left self parent children axis midval   idxs
 q).ml.clust.kd.nn[tree;d;`e2dist;();1 2f]
 closestPoint| 4
 closestDist | 3.694579
-// finds nearest neighbour excluding point 4
+// finds nearest neighbor excluding point 4
 q).ml.clust.kd.nn[tree;d;`e2dist;4;1 2f]
 closestPoint| 3
 closestDist | 9.4059

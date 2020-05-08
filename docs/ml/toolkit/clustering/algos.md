@@ -94,7 +94,7 @@ The **DBSCAN** (Density-Based Spatial Clustering of Applications with Noise) alg
 
 Unlike many clustering algorithms which require the user to input the desired number of clusters, DBSCAN caluculates how many clusters are in the dataset based two criteria
 
-1. The minimum number of points required within a neighbourhood in order for a cluster to be defined
+1. The minimum number of points required within a neighborhood in order for a cluster to be defined
 
 2. The epsilon radius, this is the distance from each point within which points will be defined as being part of the same cluster
 
@@ -104,7 +104,7 @@ Where
 
 -   `data` represents the points being analyzed in matrix format, where each column is an individual datapoint
 -   `df` is the distance function as a symbol: `e2dist` `edist` `mdist` (see [section](##Distance Metrics))
--   `minpts` is the minimum number of points required in a given neighbourhood to define a cluster
+-   `minpts` is the minimum number of points required in a given neighborhood to define a cluster
 -   `eps` is the epsilon radius, the distance from each point within which points are defined as being in the same cluster
 
 returns a list indicating the cluster each data point belongs to, any outliers in the data will return a null value as their cluster

@@ -54,7 +54,7 @@ The following scoring methods are provided for use when the true cluster assignm
 
 3. **Silhouette Score**:
 
-	This score measures how similar an object is to the members of its own cluster when compared to other clusters. This metric ranges from -1 to +1 with a high value indicating that objects are well matched to their own clusters and poorly matched to neighbouring clusters. A value of -1 indicates clusters are overlapping, 0 indicates that clusters are close to one another and +1 indicates clusters are separated from one another.
+	This score measures how similar an object is to the members of its own cluster when compared to other clusters. This metric ranges from -1 to +1 with a high value indicating that objects are well matched to their own clusters and poorly matched to neighboring clusters. A value of -1 indicates clusters are overlapping, 0 indicates that clusters are close to one another and +1 indicates clusters are separated from one another.
 
 ### `.ml.clust.daviesbouldin`
 
