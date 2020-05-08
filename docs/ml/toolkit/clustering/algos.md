@@ -38,7 +38,7 @@ Where
 -   `iter` is the number of iterations to be completed
 -   `kpp` is a boolean flag indicating the initializaton type: random (0b) or using [k-means++](https://en.wikipedia.org/wiki/K-means%2B%2B) (1b)
 
-returns a list indicating the cluster each data point belongs to
+returns a list indicating the cluster each datapoint belongs to.
 
 ```q
 q)show d:2 10#20?5.
@@ -72,7 +72,7 @@ Where
 - `dmp` is the damping coefficient to be applied to the availability and responsibility matrices.
 - `diag` is the preference function for the diagonal of the similarity matrix (e.g.  `min` `med` `max` etc.).
 
-returns a list indicating the cluster each data point belongs to
+returns a list indicating the cluster each datapoint belongs to.
 
 ```q
 q)show d:2 10#20?10.
@@ -90,9 +90,9 @@ q)group APclt
 
 ### `.ml.clust.dbscan`
 
-The **DBSCAN** (Density-Based Spatial Clustering of Applications with Noise) algorithm, groups points that are closely packed in areas of high-density. Any points in low-density regions are seen as outliers.
+The **DBSCAN** (Density-Based Spatial Clustering of Applications with Noise) algorithm, groups points that are closely packed in areas of high density. Any points in low-density regions are seen as outliers.
 
-Unlike many clustering algorithms which require the user to input the desired number of clusters, DBSCAN caluculates how many clusters are in the dataset based two criteria
+Unlike many clustering algorithms, which require the user to input the desired number of clusters, DBSCAN caluculates how many clusters are in the dataset based two criteria
 
 1. The minimum number of points required within a neighborhood in order for a cluster to be defined
 
@@ -107,7 +107,7 @@ Where
 -   `minpts` is the minimum number of points required in a given neighborhood to define a cluster
 -   `eps` is the epsilon radius, the distance from each point within which points are defined as being in the same cluster
 
-returns a list indicating the cluster each data point belongs to, any outliers in the data will return a null value as their cluster
+returns a list indicating the cluster each data point belongs to, any outliers in the data will return a null value as their cluster.
 
 ```q
 q)show d:2 10#20?5.
@@ -124,54 +124,8 @@ q).ml.clust.dbscan[d;`e2dist;3;.5]
 0N 0N 0N 0N 0N 0N 0N 0N 0N 0N
 ```
 
-### `.ml.clust.cure`
-
-CURE clustering is a technique used to deal with datasets containing outliers and clusters of varying sizes and shapes. Each cluster is represented by a specified number of representative points. These points are chosen by taking the the most scattered points in each cluster and shrinking them towards the cluster center using a compression ratio.
-
-Syntax: `.ml.clust.cure[data;df;k;n;c]`
-
-Where
-
-- `data` represents the points being analyzed in matrix format, where each column is an individual datapoint
-- `df`  is the distance function as a symbol: `e2dist` `edist` `mdist` (see [section](##Distance Metrics))
-- `k` is the number of clusters
-- `n` is the number of representative points
-- `c` is the compression ratio
-
-returns a list indicating the cluster each data point belongs to
-
-```q
-q)show d:2 10#20?20.
-15.66737 8.199122 12.21763 9.952983 8.175089 8.994621 0.2784152 14.29756 3.89..
-12.40603 18.65263 5.494133 1.150503 5.121315 4.620216 1.744803  2.048864 17.3..
-q).ml.clust.cure[d;`e2dist;2;0]
-i1 i2 dist      n 
-------------------
-4  5  0.9227319 2 
-2  10 11.15155  3 
-8  9  12.08844  2 
-11 7  16.19596  4 
-13 3  18.92826  5 
-1  12 20.25978  3 
-14 6  73.7583   6 
-0  15 94.79481  4 
-17 16 109.1472  10
-q).ml.clust.cure[d;`mdist;5;0.5]
-i1 i2 dist     n 
------------------
-4  5  1.320631 2 
-2  10 4.176539 3 
-11 3  4.256665 4 
-8  9  4.866351 2 
-12 7  4.978184 5 
-1  13 6.833131 3 
-14 6  10.73582 6 
-0  16 13.04284 7 
-17 15 14.39012 10
-```
-
 ### `.ml.clust.hc`
-q)
+
 Agglomerative hierarchical clustering iteratively groups data, using a bottom-up approach that initially treats all data points as individual clusters.
 
 There are 5 possible linkages in hierarchical clustering: single, complete, average, centroid and ward. Euclidean or manhattan distances can be used with each linkage except for ward, which only works with Euclidean squared distances.
@@ -186,7 +140,7 @@ Where
 -   `df` is the distance function as a symbol: `e2dist` `edist` `mdist` (see [section](##Distance Metrics))
 -   `lf` is the linkage function as a symbol: `single`  `complete` `average` `centroid` `ward`
 
-returns a dendrogram table
+returns a dendrogram table, describing the order in which clusters are joined, and the distance between the clusters as they are joined.
 
 ```q
 q)show d:2 10#20?5.
@@ -236,6 +190,52 @@ q).ml.clust.hc[d;`mdist;`ward]
     
 !!! warning
         * Ward linkage only works in conjunction with Euclidean squared distances (`e2dist`), while centroid linkage only works with Euclidean distances (`e2dist`,`edist`). If the user tries to input a different distance metric an error will result, as shown above.
+
+### `.ml.clust.cure`
+
+CURE (Clustering Using REpresentatives) is a technique used to deal with datasets containing outliers and clusters of varying sizes and shapes. Each cluster is represented by a specified number of representative points. These points are chosen by taking the the most scattered points in each cluster and shrinking them towards the cluster center using a compression ratio.
+
+Syntax: `.ml.clust.cure[data;df;k;n;c]`
+
+Where
+
+- `data` represents the points being analyzed in matrix format, where each column is an individual datapoint
+- `df`  is the distance function as a symbol: `e2dist` `edist` `mdist` (see [section](##Distance Metrics))
+- `k` is the number of clusters
+- `n` is the number of representative points
+- `c` is the compression ratio
+
+returns a dendrogram table, describing the order in which clusters are joined, and the distance between the clusters as they are joined.
+
+```q
+q)show d:2 10#20?20.
+15.66737 8.199122 12.21763 9.952983 8.175089 8.994621 0.2784152 14.29756 3.89..
+12.40603 18.65263 5.494133 1.150503 5.121315 4.620216 1.744803  2.048864 17.3..
+q).ml.clust.cure[d;`e2dist;2;0]
+i1 i2 dist      n 
+------------------
+4  5  0.9227319 2 
+2  10 11.15155  3 
+8  9  12.08844  2 
+11 7  16.19596  4 
+13 3  18.92826  5 
+1  12 20.25978  3 
+14 6  73.7583   6 
+0  15 94.79481  4 
+17 16 109.1472  10
+q).ml.clust.cure[d;`mdist;5;0.5]
+i1 i2 dist     n 
+-----------------
+4  5  1.320631 2 
+2  10 4.176539 3 
+11 3  4.256665 4 
+8  9  4.866351 2 
+12 7  4.978184 5 
+1  13 6.833131 3 
+14 6  10.73582 6 
+0  16 13.04284 7 
+17 15 14.39012 10
+```
 
 ## Cutting dendrograms
 
