@@ -56,7 +56,7 @@ Where
 - `data` represents the points being analyzed in matrix format, where each column is an individual datapoint
 - `clt` is the list of clusters returned by one of the clustering algorithms in `.ml.clust`
 
-returns the Davies-Bouldin index, with a lower value indicating that the clusters are well separated and tightly packed.
+returns the Davies-Bouldin index, with a lower value indicating better clustering, where clusters are well separated and tightly packed.
 
 ```q
 q)show d:2 10#20?10.
@@ -141,7 +141,7 @@ q).ml.clust.silhouette[d;`e2dist;r2;0b]
 
 ## Supervised Learning
 
-The following metrics are provided in the case that the true and predicted labels of the clusters are known
+The following metric is provided in the case that the true and predicted labels of the clusters are known
 
 ### `.ml.clust.homogeneity`
 
@@ -154,7 +154,7 @@ Where
 -  `pred` is the predicted cluster labels
 -  `true` is the true cluster labels
 
-returns the homogeneity score, bounded between 0 and 1, with a high value indicating a more accurate labeling of clusters
+returns the homogeneity score, bounded between 0 and 1, with a high value indicating a more accurate labeling of clusters.
 
 ```q
 q)show true:10?3
@@ -183,7 +183,7 @@ Where
 - `df` is the distance function as a symbol, e.g. `e2dist` `edist`
 - `kmax` is the maximum number of clusters
 
-returns distortion scores for each set of clusters produced by k-means, with different values of k up to `kmax`
+returns distortion scores for each set of clusters produced by k-means, with increasing values of k up to `kmax`.
 
 ```q
 q)show d:2 10#20?10.
@@ -194,7 +194,7 @@ q).ml.clust.elbow[d;`edist;5]
 ```
 
 !!! note
-	If the values produced by `.ml.clust.elbow` are plotted it is possible to determine the optimum number of clusters. The above example produces the following graph
+	If the values produced by `.ml.clust.elbow` are plotted, it is possible to determine the optimum number of clusters. The above example produces the following graph
 
 	![elbow_graph](img/elbow_example.png)
 
