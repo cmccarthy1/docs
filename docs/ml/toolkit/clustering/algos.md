@@ -171,7 +171,7 @@ i1 i2 dist     n
 ```
 
 ### `.ml.clust.hc`
-
+q)
 Agglomerative hierarchical clustering groups data iteratively, using a bottom-up approach which initially treats all data points as individual clusters.
 
 Tere are 5 possible linkages in hierarchical clustering: single, complete, average, centroid and ward. Euclidean or manhattan distances can be used for with each linkage, except for ward which only works with Euclidean squared distances.
@@ -224,17 +224,11 @@ q).ml.clust.hc[d;`mdist;`ward]
     The dendrogram returned can be passed to a mixture of matplotlib and scipy functions which plot the dendrogram structure represented in the table. An example is shown below.
     
     ```q
-
     q)plt:.p.import`matplotlib.pyplot
-
     q).p.import[`scipy.cluster][`:hierarchy][`:dendrogram]flip value flip r1;
-
     q)plt[`:title]"Dendrogram";
-
     q)plt[`:xlabel]"Data Points";
-
     q)plt[`:ylabel]"Distance";
-
     q)plt[`:show][];
     ```
     
@@ -243,16 +237,13 @@ q).ml.clust.hc[d;`mdist;`ward]
 !!! warning
         * Ward linkage only works in conjunction with Euclidean squared distances (`e2dist`), while centroid linkage only works with Euclidean distances (`e2dist`,`edist`). If the user tries to input a different distance metric an error will result, as shown above.
 
-	* If the user inputs a linkage function which is not contained within the `.ml.clust.i.ld` dictionary an error will occur.
-
-
 ## Cutting dendrograms
 
 Hierarchical clustering methods (including CURE) produce dendrograms, which can then be _cut_ at a given count (`k`) or distance, in order to produce a clustering.
 
 ### `.ml.clust.hccutk`
 
-_Cut dendrogram produced from hierarchical clustetering into k clusters_
+_Cut dendrogram into k clusters_
 
 Syntax: `.ml.clust.hccutk[t;kval]`
 
@@ -279,14 +270,14 @@ i1 i2 dist      n
 14 4  3.109495  6 
 15 12 3.520892  4 
 16 17 5.667062  10
-q)// cut the dendrogram into 2 clusters
+// cut the dendrogram into 2 clusters
 q).ml.clust.hccutk[dgram;2]
 0 0 1 0 0 0 0 1 1 1
 ```
 
 ### `.ml.clust.hccutdist`
 
-_Use a distance threshold to cut dendrogram produced from hierarchical clustetering to a list of clusters_
+_Cut dendrogram into clusters based on a distance threshold_
 
 Syntax: `.ml.clust.hccutdist[t;dthresh]
 
@@ -313,7 +304,7 @@ i1 i2 dist     n
 14 6  5.675252 6 
 15 4  6.790642 4 
 16 17 7.93483  10
-q)// cut dendrogram using a distance threshold of 6
+// cut dendrogram using a distance threshold of 6
 q).ml.clust.hccutdist[dgram;6]
 1 1 0 0 2 1 1 1 0 1
 ```

@@ -8,7 +8,7 @@ keywords: machine learning, ml, clustering, k-means, dbscan, hierarchical, cure,
 
 A k-d tree (k-dimensional) tree is a special case of a binary search tree, commonly used in computer science to organize data points in k-dimensional space. Each leaf node in the tree contains a set of k-dimensional points, while each non-leaf node generates a splitting hyperplane which divides the surrounding space.
 
-At each non-leaf node, the dataset is split roughly in two. A splitting dimension is chosen to reflect the axis with highest variance, and the median value for the dataset is used to split the data on this axis. The placement of each node in the tree is determined by whether the node is less than (to the left) or greater than (to the right) of the proceeding median value. This splitting process repeats recursively throughout the tree, until a small enough number of points remain to form a leaf.
+At each non-leaf node, the dataset is split roughly in two. A splitting dimension is chosen to reflect the axis with highest variance, and the median value for the dataset is used to split the data on this axis. The placement of each node in the tree is determined by whether the node is less than (to the left of) or greater than (to the right of) the proceeding median value. This splitting process repeats recursively throughout the tree, until a small enough number of points remain to form a leaf.
 
 Within this toolkit a number of functions are provided to deal with k-d trees. 
 
@@ -80,7 +80,7 @@ Syntax: `.ml.clust.kd.nn[tree;data;df;xidxs;pt]`
 -   `xidxs` are the indices (columns in `data`) to be excluded from the nearest neighbour search ( `()` if any point can be chosen)
 -   `pt` is the floating data point to be searched
 
-returns a dictionary containing the column index in `data` (`closestPoint`) and distance (`closestPoint`) of the closest point
+returns a dictionary containing the column index in `data` (`closestPoint`) and distance (`closestPoint`) of the nearest neighbour
 
 ```q
 q)show d:2 10#20?10.
@@ -111,7 +111,7 @@ Syntax: `.ml.clust.kd.findleaf[tree;pt;node]`
 -   `pt` is the point to search
 -   `node` is a node in the k-d tree to start the search
 
-returns the row of the kd-tree that the data point belongs to
+returns the leaf row of the kd-tree that the data point belongs to
 
 ```q
 q)show d:2 10#20?10.
