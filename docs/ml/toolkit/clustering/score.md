@@ -10,7 +10,7 @@ Scoring metrics allow users to validate the performance of their clustering algo
 
 1. Unsupervised Learning: 
 
-	These metrics analyze how well data has been assigned to clusters, measuring intra-cluster similarity (cohesion) and differences (separation).. In general clustering is said to be successful if clusters are well-spaced and densely packed.
+	These metrics analyze how well data has been assigned to clusters, measuring intra-cluster similarity (cohesion) and differences (separation). In general, clustering is said to be successful if clusters are well-spaced and densely packed.
 
 2. Supervised Learning:
 
@@ -20,16 +20,17 @@ Scoring metrics allow users to validate the performance of their clustering algo
 
 	If the required number of clusters is not known prior to clustering, the **Elbow Method** is used to estimate the optimum number of clusters within the dataset using K-means clustering.
 
-The following are the scoring metrics and analysis function provided within this library
+The following scoring metrics are provided within this library
 
 ```txt
 .ml.clust - Scoring Metrics
-  // Unsupervised Learning
+
+// Unsupervised Learning
   .daviesbouldin      Davies-Bouldin Index
   .dunn               Dunn Index
   .silhouette         Silhouette score
 
-  // Supervised Learning
+// Supervised Learning
   .homogeneity        Homogeneity score between predictions and actual value
 
   // Cluster Optimisation
@@ -43,18 +44,6 @@ The following are the scoring metrics and analysis function provided within this
 ## Unsupervised Learning
 
 The following scoring methods are provided for use when the true cluster assignment is not known.
-
-1. **Davies-Bouldin Index**:
-
-	
-
-2. **Dunn Index**:
-
-	
-
-3. **Silhouette Score**:
-
-	
 
 ### `.ml.clust.daviesbouldin`
 
@@ -150,15 +139,9 @@ q).ml.clust.silhouette[d;`e2dist;r2;0b]
 -0.4862092 -0.6652588 0.8131323 0.595948 -0.2540023 0.5901292 -0.2027718 0.61..
 ```
 
-
 ## Supervised Learning
 
 The following metrics are provided in the case that the true and predicted labels of the clusters are known
-
-
-1. **Homogeneity Score**:
-
-	This metric  The metric is 
 
 ### `.ml.clust.homogeneity`
 
