@@ -56,7 +56,7 @@ Where
 - `data` represents the points being analyzed in matrix format, where each column is an individual datapoint
 - `clt` is the list of clusters returned by one of the clustering algorithms in `.ml.clust`
 
-returns the Davies-Bouldin index, with a lower value indicating better clustering, where clusters are well separated and tightly packed.
+returns the Davies-Bouldin index, where a lower value indicates better clustering, with well-separated, tightly-packed clusters.
 
 ```q
 q)show d:2 10#20?10.
@@ -86,7 +86,7 @@ Where
 - `df` is the distance function as a symbol, e.g. `e2dist` `edist` `mdist`
 - `clt` is the list of clusters returned by the clustering algorithms in `.ml.clust`
 
-returns the Dunn index, with a higher value indicating better clustering, where clusters are well separated and tightly packed.
+returns the Dunn index, where a higher value indicates better clustering, with well-separated, tightly-packed clusters.
 
 ```q
 q)show d:2 10#20?10.
@@ -117,7 +117,7 @@ Where
 - `clt` is the list of clusters returned by the clustering algorithms in `.ml.clust`
 - `isavg` is a boolean - `1b` to return the average coefficient, `0b` to return a list of coefficients
 
-returns the Silhouette coefficient, ranging from -1 to +1, with +1 indicating separated clusters, and -1 indicating overlapping clusters.
+returns the Silhouette coefficient, ranging from -1 (overlapping clusters) to +1 (separated clusters).
 
 ```q
 q)show d:2 10#20?10.
@@ -169,7 +169,7 @@ q).ml.clust.homogeneity[true;true]
 
 ## Optimum Number of Clusters
 
-The optimum number of clusters can be found manually in a number of ways using techniques above. Within the toolkit we provide an implementation of one of the most common methods for caluculating the optimum number of clusters:
+The optimum number of clusters can be found manually in a number of ways using techniques above. Within the toolkit we provide an implementation of one of the most common methods for calculating the optimum number of clusters:
 
 ### `.ml.clust.elbow`
 
