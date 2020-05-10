@@ -244,14 +244,14 @@ Hierarchical clustering methods (including CURE) produce dendrograms, which can 
 
 _Cut dendrogram into k clusters_
 
-Syntax: `.ml.clust.hccutk[t;kval]`
+Syntax: `.ml.clust.hccutk[t;k]`
 
 Where
 
 - `t` is the dendrogram table produced by the hierarchical clustering functions
-- `kval` is the number of clusters to be produced from cutting the dendrogram
+- `k` is the number of clusters to be produced from cutting the dendrogram
 
-returns a list indicating the cluster each data point belongs to
+returns a list indicating the cluster each datapoint belongs to.
 
 ```q
 q)show d:2 10#20?5.
@@ -278,14 +278,14 @@ q).ml.clust.hccutk[dgram;2]
 
 _Cut dendrogram into clusters based on a distance threshold_
 
-Syntax: `.ml.clust.hccutdist[t;dthresh]
+Syntax: `.ml.clust.hccutdist[t;dist]
 
 Where
 
 - `t` is the dendrogram table produced by the hierarchical clustering functions
-- `dthresh` is the distance threshold applied when cutting the dendrogram into clusters
+- `dist` is the distance threshold applied when cutting the dendrogram into clusters
 
-returns a list indicating the cluster each data point belongs to
+returns a list indicating the cluster each datapoint belongs to.
 
 ```q
 q)show d:2 10#20?10.
@@ -312,10 +312,10 @@ q).ml.clust.hccutdist[dgram;6]
 
 The distance functions available in the clustering library are:
 
--   `edist` is the Euclidean distance
--   `e2dist` is the squared Euclidean distance
--   `nege2dist` is the negative squared Euclidean distance (used predominantly for affinity propagation)
--   `mdist` is the Manhattan distance
+-   `edist` the Euclidean distance
+-   `e2dist` the squared Euclidean distance
+-   `nege2dist` the negative squared Euclidean distance (used predominantly for affinity propagation)
+-   `mdist` the Manhattan distance
 
 !!! warning
 	If the user inputs an invalid distance metric, an error will occur.
