@@ -128,7 +128,7 @@ q).ml.clust.dbscan[d;`e2dist;3;.5]
 
 Agglomerative hierarchical clustering iteratively groups data, using a bottom-up approach that initially treats all data points as individual clusters.
 
-There are 5 possible linkages in hierarchical clustering: single, complete, average, centroid and ward. Euclidean or manhattan distances can be used with each linkage except for ward, which only works with Euclidean squared distances.
+There are 5 possible linkages in hierarchical clustering: single, complete, average, centroid and ward. Euclidean or manhattan distances can be used with each linkage except for ward (which only works with Euclidean squared distances) and centroid (which only works with Euclidean distances).
 
 In the single and centroid implementations, a k-d tree is used to store the representative points of each cluster (more information [here](kdtree.md)).
 
@@ -193,7 +193,7 @@ q).ml.clust.hc[d;`mdist;`ward]
 
 ### `.ml.clust.cure`
 
-CURE (Clustering Using REpresentatives) is a technique used to deal with datasets containing outliers and clusters of varying sizes and shapes. Each cluster is represented by a specified number of representative points. These points are chosen by taking the the most scattered points in each cluster and shrinking them towards the cluster center using a compression ratio.
+CURE (Clustering Using REpresentatives) is a technique used to deal with datasets containing outliers and clusters of varying sizes and shapes. Each cluster is represented by a specified number of representative points. These points are chosen by taking the most scattered points in each cluster and shrinking them towards the cluster center using a compression ratio.
 
 Syntax: `.ml.clust.cure[data;df;k;n;c]`
 
