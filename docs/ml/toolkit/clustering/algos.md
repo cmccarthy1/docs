@@ -24,7 +24,7 @@ The clustering library provides q implementations of a number of common clusteri
 
 ### `.ml.clust.kmeans`
 
-K-means clustering begins by selecting k data points as cluster centers and assigning data to the cluster with the nearest center.
+K-means clustering begins by selecting k datapoints as cluster centers and assigning data to the cluster with the nearest center.
 
 The algorithm follows an iterative refinement process which runs a specified number of times, updating the cluster centers and assigned points with each iteration.
 
@@ -107,7 +107,7 @@ Where
 -   `minpts` is the minimum number of points required in a given neighborhood to define a cluster
 -   `eps` is the epsilon radius, the distance from each point within which points are defined as being in the same cluster
 
-returns a list indicating the cluster each data point belongs to, any outliers in the data will return a null value as their cluster.
+returns a list indicating the cluster each datapoint belongs to, any outliers in the data will return a null value as their cluster.
 
 ```q
 q)show d:2 10#20?5.
@@ -126,7 +126,7 @@ q).ml.clust.dbscan[d;`e2dist;3;.5]
 
 ### `.ml.clust.hc`
 
-Agglomerative hierarchical clustering iteratively groups data, using a bottom-up approach that initially treats all data points as individual clusters.
+Agglomerative hierarchical clustering iteratively groups data, using a bottom-up approach that initially treats all datapoints as individual clusters.
 
 There are 5 possible linkages in hierarchical clustering: single, complete, average, centroid and ward. Euclidean or manhattan distances can be used with each linkage except for ward (which only works with Euclidean squared distances) and centroid (which only works with Euclidean distances).
 
