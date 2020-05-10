@@ -29,7 +29,7 @@ _Build k-d tree_
 Syntax: `.ml.clust.kd.newtree[data;leafsz]`
 
 -   `data` represents the points being analyzed in matrix format, where each column is an individual datapoint
--   `leafsz` is the minimum number of data points contained within each leaf of the tree. 
+-   `leafsz` is the minimum number of datapoints contained within each leaf of the tree. 
 
 returns a k-d tree table with the following columns
 
@@ -38,8 +38,8 @@ returns a k-d tree table with the following columns
 - `self` Tree index of current node
 - `parent` Tree index of the parent node
 - `children` Tree indices of any child nodes
-- `axis` Splitting dimension from which the pivot value was obtained
-- `midval` Pivot/splitting value of each node (null if leaf has been reached)
+- `axis` Splitting dimension of current node (null if leaf node)
+- `midval` Splitting value of current node (null if leaf node)
 - `idxs` Indices (column in `data`) of datapoints contained in a leaf
 
 ```q
@@ -70,7 +70,7 @@ leaf left self parent children axis midval  idxs
 
 ## `.ml.clust.kd.nn`
 
-_Find the nearest neighbor to a data point_
+_Find the nearest neighbor for a data point_
 
 Syntax: `.ml.clust.kd.nn[tree;data;df;xidxs;pt]`
 
@@ -103,7 +103,7 @@ closestDist | 9.4059
 
 ## `.ml.clust.kd.findleaf`
 
-_Find the tree index of the leaf that each datapoint belongs to_
+_Find the tree index of the leaf that a datapoint belongs to_
 
 Syntax: `.ml.clust.kd.findleaf[tree;pt;node]`
 
