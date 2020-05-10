@@ -26,7 +26,7 @@ The clustering library provides q implementations of a number of common clusteri
 
 K-means clustering begins by selecting k data points as cluster centers and assigning data to the cluster with the nearest center.
 
-The algorithm follows an iterative refinement process which runs a specified number of times, updating the cluster centers and assigned points at each iteration.
+The algorithm follows an iterative refinement process which runs a specified number of times, updating the cluster centers and assigned points with each iteration.
 
 Syntax: `.ml.clust.kmeans[data;df;k;iter;kpp]`
 
@@ -36,7 +36,7 @@ Where
 -   `df` is the distance function: `e2dist` `edist` (see [section](##Distance Metrics))
 -   `k` is the number of clusters
 -   `iter` is the number of iterations to be completed
--   `kpp` is a boolean flag indicating the initializaton type: random (0b) or using [k-means++](https://en.wikipedia.org/wiki/K-means%2B%2B) (1b)
+-   `kpp` is a boolean flag indicating the initializaton type: random (`0b`) or using [k-means++](https://en.wikipedia.org/wiki/K-means%2B%2B) (`1b`)
 
 returns a list indicating the cluster each datapoint belongs to.
 
@@ -55,13 +55,13 @@ q).ml.clust.kmeans[d;`mdist;3;10;1b]
 ```
 
 !!! note
-      The distance metrics that can be used with the K-Means algorithm are the Euclidean distances (`e2dist`,`edist`). The use of any other distance metric will result in an error being flagged.
+      The distance metrics that can be used with the K-Means algorithm are the Euclidean distances (`e2dist`,`edist`). The use of any other distance metric will result in an error.
 
 ### `.ml.clust.ap`
 
 Affinity Propagation groups data based on the similarity between points and subsequently finds _exemplars_, which best represent the points in each cluster. The algorithm does not require the user to input the number of clusters, but will determine the optimum solution by exchanging real-valued messages between points until a high-valued set of exemplars is produced.
 
-The algorithm uses a user specified damping coefficient to reduce the availability and responsibility of messages passed between points, while a preference value is used to set the diagonal values of the similarity matrix. A more detailed explanation of the algorithm can be found [here](https://towardsdatascience.com/unsupervised-machine-learning-affinity-propagation-algorithm-explained-d1fef85f22c8).
+The algorithm uses a user-specified damping coefficient to reduce the availability and responsibility of messages passed between points, while a preference value is used to set the diagonal values of the similarity matrix. A more detailed explanation of the algorithm can be found [here](https://towardsdatascience.com/unsupervised-machine-learning-affinity-propagation-algorithm-explained-d1fef85f22c8).
 
 Syntax: `.ml.clust.ap[data;df;dmp;diag]`
 
@@ -92,7 +92,7 @@ q)group APclt
 
 The **DBSCAN** (Density-Based Spatial Clustering of Applications with Noise) algorithm, groups points that are closely packed in areas of high density. Any points in low-density regions are seen as outliers.
 
-Unlike many clustering algorithms, which require the user to input the desired number of clusters, DBSCAN caluculates how many clusters are in the dataset based two criteria
+Unlike many clustering algorithms, which require the user to input the desired number of clusters, DBSCAN calculates how many clusters are in the dataset based two criteria
 
 1. The minimum number of points required within a neighborhood in order for a cluster to be defined
 
@@ -195,13 +195,12 @@ q).ml.clust.hc[d;`mdist;`ward]
 
 CURE (Clustering Using REpresentatives) is a technique used to deal with datasets containing outliers and clusters of varying sizes and shapes. Each cluster is represented by a specified number of representative points. These points are chosen by taking the most scattered points in each cluster and shrinking them towards the cluster center using a compression ratio.
 
-Syntax: `.ml.clust.cure[data;df;k;n;c]`
+Syntax: `.ml.clust.cure[data;df;n;c]`
 
 Where
 
 - `data` represents the points being analyzed in matrix format, where each column is an individual datapoint
 - `df`  is the distance function as a symbol: `e2dist` `edist` `mdist` (see [section](##Distance Metrics))
-- `k` is the number of clusters
 - `n` is the number of representative points
 - `c` is the compression ratio
 
