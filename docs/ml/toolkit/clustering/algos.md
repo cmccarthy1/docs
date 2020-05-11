@@ -175,18 +175,21 @@ q).ml.clust.hc[d;`mdist;`ward]
 ```
 
 !!! note
-    The dendrogram returned can be passed to a mixture of matplotlib and scipy functions which plot the dendrogram structure represented in the table. An example is shown below.
+	The dendrogram returned can be passed to a mixture of matplotlib and scipy functions which plot the dendrogram structure represented in the table. An example is shown below.
     
-    ```q
-    q)plt:.p.import`matplotlib.pyplot
-    q).p.import[`scipy.cluster][`:hierarchy][`:dendrogram]flip value flip r1;
-    q)plt[`:title]"Dendrogram";
-    q)plt[`:xlabel]"Data Points";
-    q)plt[`:ylabel]"Distance";
-    q)plt[`:show][];
-    ```
-    
-    ![dendro_plot](img/dendrogram_example.png)    
+	q)plt:.p.import`matplotlib.pyplot
+
+	q).p.import[`scipy.cluster][`:hierarchy][`:dendrogram]flip value flip r1;
+
+	q)plt[`:title]"Dendrogram";
+
+	q)plt[`:xlabel]"Data Points";
+
+	q)plt[`:ylabel]"Distance";
+
+	q)plt[`:show][];
+
+	![dendro_plot](img/dendrogram_example.png)    
     
 !!! warning
         * Ward linkage only works in conjunction with Euclidean squared distances (`e2dist`), while centroid linkage only works with Euclidean distances (`e2dist`,`edist`). If the user tries to input a different distance metric an error will result, as shown above.
@@ -278,7 +281,7 @@ q).ml.clust.hccutk[dgram;2]
 
 _Cut dendrogram into clusters based on a distance threshold_
 
-Syntax: `.ml.clust.hccutdist[t;dist]
+Syntax: `.ml.clust.hccutdist[t;dist]`
 
 Where
 
