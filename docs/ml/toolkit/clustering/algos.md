@@ -37,9 +37,15 @@ Where
 -   `k` is the number of clusters
 -   `iter` is the number of iterations to be completed
 -   `kpp` is a boolean flag indicating the initializaton type: random (`0b`) or using [k-means++](https://en.wikipedia.org/wiki/K-means%2B%2B) (`1b`)
+<<<<<<< HEAD
 
 returns a list indicating the cluster each datapoint belongs to.
 
+=======
+
+returns a list indicating the cluster each datapoint belongs to.
+
+>>>>>>> d14894c5bf3bcea4191aeb83ffa8a91913cb73e9
 ```q
 q)show d:2 10#20?5.
 1.963762 2.585456 2.579898  2.033321  0.8904193 1.508861 ...
@@ -281,7 +287,11 @@ q).ml.clust.hccutk[dgram;2]
 
 _Cut dendrogram into clusters based on a distance threshold_
 
+<<<<<<< HEAD
 Syntax: `.ml.clust.hccutdist[t;dist]`
+=======
+Syntax: `.ml.clust.hccutdist[t;dist]
+>>>>>>> d14894c5bf3bcea4191aeb83ffa8a91913cb73e9
 
 Where
 
