@@ -14,37 +14,37 @@ keywords: machine learning, ml, clustering, k-means, dbscan, hierarchical, cure,
 Algorithms
     
   Affinity Propagation (AP):
-    - [ap.fit](#mlclustapfit)                   Fit AP algorithm
-    - [ap.predict](#mlclustappredict)               Make predictions using prefit AP model
-    - [ap.update](#mlclustapupdate)                Update AP model
+    [ap.fit](#mlclustapfit)                   Fit AP algorithm
+    [ap.predict](#mlclustappredict)               Make predictions using a fitted AP model
+    [ap.update](#mlclustapupdate)                Update AP model
     
   Clustering Using REpresentatives (CURE):
-    - [cure.fit](#mlclustcurefit)                 Fit CURE algorithm
-    - [cure.predict](#mlclustcurepredict)             Make predictions using prefit CURE model
+    [cure.fit](#mlclustcurefit)                 Fit CURE algorithm
+    [cure.predict](#mlclustcurepredict)             Make predictions using a fitted CURE model
     
-  DBSCAN:
-    - [dbscan.fit](#mlclustdbscanfit)               Fit DBSCAN algorithm
-    - [dbscan.predict](#mlclustdbscanpredict)           Make predictions using prefit DBSCAN model
-    - [dbscan.update](#mlclustdbscanupdate)            Update DBSCAN model
+  Density-Based Spatial Clustering of Applications with Noise (DBSCAN):
+    [dbscan.fit](#mlclustdbscanfit)               Fit DBSCAN algorithm
+    [dbscan.predict](#mlclustdbscanpredict)           Make predictions using a fitted DBSCAN model
+    [dbscan.update](#mlclustdbscanupdate)            Update DBSCAN model
     
-   Hierarchical Clustering (HC):
-    - [hc.fit](#mlclusthcfit)                   Fit HC algorithm
-    - [hc.predict](#mlclusthcpredict)               Make predictions using prefit HC model
+  Hierarchical Clustering (HC):
+    [hc.fit](#mlclusthcfit)                   Fit HC algorithm
+    [hc.predict](#mlclusthcpredict)               Make predictions using a fitted HC model
     
   K-Means:
-    - [kmeans.fit](#mlclustkmeansfit)               Fit K-Means algorithm
-    - [kmeans.predict](#mlclustkmeanspredict)           Make predictions using prefit K-Means model
-    - [kmeans.update](#mlclustkmeansupdate)            Update K-Means model
+    [kmeans.fit](#mlclustkmeansfit)               Fit K-Means algorithm
+    [kmeans.predict](#mlclustkmeanspredict)           Make predictions using a fitted K-Means model
+    [kmeans.update](#mlclustkmeansupdate)            Update K-Means model
 
 Dendrogram Cutting Functionality
 
   Clustering Using REpresentatives (CURE):
-    - [cure.cutk](#mlclustcurecutk)                Cut CURE dendrogram into k clusters
-    - [cure.cutdist](#mlclustcurecutdist)             Cut CURE dendrogram into clusters based on a distance threshold
+    [cure.cutk](#mlclustcurecutk)                Cut CURE dendrogram into k clusters
+    [cure.cutdist](#mlclustcurecutdist)             Cut CURE dendrogram into clusters based on a distance threshold
     
    Hierarchical Clustering (HC):
-    - [hc.cutk](#mlclusthccutk)                  Cut HC dendrogram into k clusters
-    - [hc.cutdist](#mlclusthccutdist)               Cut HC dendrogram into clusters based on a distance threshold
+    [hc.cutk](#mlclusthccutk)                  Cut HC dendrogram into k clusters
+    [hc.cutdist](#mlclusthccutdist)               Cut HC dendrogram into clusters based on a distance threshold
     
 </pre>
 
@@ -55,7 +55,13 @@ The clustering library provides q implementations of a number of common clusteri
 
 Hierarchical clustering methods (including CURE) produce dendrograms, which can then be _cut_ at a given count or distance to produce a clustering.
 
-## `.ml.clust.ap.fit`
+## Affinity Propagation
+
+Affinity Propagation groups data based on the similarity between points and subsequently finds _exemplars_, which best represent the points in each cluster. The algorithm does not require the number of clusters, but determines the optimum solution by exchanging real-valued messages between points until a high-valued set of exemplars is produced.
+
+The algorithm uses a user-specified damping coefficient to reduce the availability and responsibility of messages passed between points, while a preference value is used to set the diagonal values of the similarity matrix. A more detailed explanation of the algorithm can be found [here](https://towardsdatascience.com/unsupervised-machine-learning-affinity-propagation-algorithm-explained-d1fef85f22c8).
+
+### `.ml.clust.ap.fit`
 
 _Fit AP algorithm_
 
@@ -88,13 +94,9 @@ q)group APfit`clt
 2| ,6
 ```
 
-Affinity Propagation groups data based on the similarity between points and subsequently finds _exemplars_, which best represent the points in each cluster. The algorithm does not require the number of clusters, but determines the optimum solution by exchanging real-valued messages between points until a high-valued set of exemplars is produced.
+### `.ml.clust.ap.predict`
 
-The algorithm uses a user-specified damping coefficient to reduce the availability and responsibility of messages passed between points, while a preference value is used to set the diagonal values of the similarity matrix. A more detailed explanation of the algorithm can be found [here](https://towardsdatascience.com/unsupervised-machine-learning-affinity-propagation-algorithm-explained-d1fef85f22c8).
-
-## `.ml.clust.ap.predict`
-
-_Make predictions using prefit AP model_
+_Make predictions using a fitted AP model_
 
 Syntax: `.ml.clust.ap.predict[data;cfg]`
 
@@ -127,7 +129,7 @@ q).ml.clust.ap.predict[tst;APfit]
 2 2 2 2 0
 ```
 
-## `.ml.clust.ap.update`
+### `.ml.clust.ap.update`
 
 _Update AP model_
 
@@ -171,7 +173,11 @@ q)group APupd`clt
 3| 6 11 12 14
 ```
 
-## `.ml.clust.cure.fit`
+## Clustering Using Representatives
+
+Clustering Using REpresentatives (CURE) is a technique used to deal with datasets containing outliers and clusters of varying sizes and shapes. Each cluster is represented by a specified number of representative points. These points are chosen by taking the most scattered points in each cluster and shrinking them towards the cluster center using a compression ratio.
+
+### `.ml.clust.cure.fit`
 
 _Fit CURE algorithm_
 
@@ -231,9 +237,7 @@ i1 i2 dist     n
 16 17 13.5457  10
 ```
 
-CURE (Clustering Using REpresentatives) is a technique used to deal with datasets containing outliers and clusters of varying sizes and shapes. Each cluster is represented by a specified number of representative points. These points are chosen by taking the most scattered points in each cluster and shrinking them towards the cluster center using a compression ratio.
-
-## `.ml.clust.cure.cutdist`
+### `.ml.clust.cure.cutdist`
 
 _Cut dendrogram into clusters based on a distance threshold_
 
@@ -270,7 +274,7 @@ q)group r`clt
 2| ,8
 ```
 
-## `.ml.clust.cure.cutk`
+### `.ml.clust.cure.cutk`
 
 _Cut dendrogram into k clusters_
 
@@ -307,9 +311,9 @@ q)group r`clt
 2| ,3
 ```
 
-## `.ml.clust.cure.predict`
+### `.ml.clust.cure.predict`
 
-_Make predictions using prefit CURE model_
+_Make predictions using a fitted CURE model_
 
 Syntax: `.ml.clust.cure.predict[data;cfg]`
 
@@ -363,7 +367,16 @@ q).ml.clust.cure.predict[tst;clt]
 2 1 2 1 1
 ```
 
-## `.ml.clust.dbscan.fit`
+## Density-Based Spatial Clustering of Applications with Noise
+
+The Density-Based Spatial Clustering of Applications with Noise (DBSCAN) algorithm, groups points that are closely packed in areas of high density. Any points in low-density regions are seen as outliers.
+
+Unlike many clustering algorithms, which require the user to input the desired number of clusters, DBSCAN calculates how many clusters are in the dataset based two criteria
+
+-   The minimum number of points required within a neighborhood in order for a cluster to be defined
+-   The epsilon radius: the distance from each point within which points will be defined as being part of the same cluster
+
+### `.ml.clust.dbscan.fit`
 
 _Fit DBSCAN algorithm_
 
@@ -403,16 +416,9 @@ q).ml.clust.dbscan.fit[d;`e2dist;3;.1]`clt
 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 ```
 
-The DBSCAN (Density-Based Spatial Clustering of Applications with Noise) algorithm, groups points that are closely packed in areas of high density. Any points in low-density regions are seen as outliers.
+### `.ml.clust.dbscan.predict`
 
-Unlike many clustering algorithms, which require the user to input the desired number of clusters, DBSCAN calculates how many clusters are in the dataset based two criteria
-
--   The minimum number of points required within a neighborhood in order for a cluster to be defined
--   The epsilon radius: the distance from each point within which points will be defined as being part of the same cluster
-
-## `.ml.clust.dbscan.predict`
-
-_Make predictions using prefit DBSCAN model_
+_Make predictions using a fitted DBSCAN model_
 
 Syntax: `.ml.clust.dbscan.predict[data;cfg]`
 
@@ -446,7 +452,7 @@ q).ml.clust.dbscan.predict[tst;DBSCANfit]
 0 0 1 1 0
 ```
 
-## `.ml.clust.dbscan.update`
+### `.ml.clust.dbscan.update`
 
 _Update DBSCAN model_
 
@@ -491,7 +497,31 @@ q)group DBSCANupd`clt
 -1| ,11
 ```
 
-## `.ml.clust.hc.fit`
+## Hierarchical Clustering
+
+Agglomerative hierarchical clustering iteratively groups data, using a bottom-up approach that initially treats all data points as individual clusters.
+
+There are five possible linkages in hierarchical clustering: single, complete, average, centroid and ward. Euclidean or Manhattan distances can be used with each linkage except for ward (which only works with Euclidean squared distances) and centroid (which only works with Euclidean distances).
+
+In the single and centroid implementations, a k-d tree is used to store the representative points of each cluster (see [k-d tree](kdtree.md)).
+
+The dendrogram returned can be passed to a mixture of MatPlotLib and SciPy functions which plot the dendrogram structure represented in the table. For example:
+
+```q
+plt:.p.import`matplotlib.pyplot
+.p.import[`scipy.cluster][`:hierarchy][`:dendrogram]flip value flip r1
+plt[`:title]"Dendrogram"
+plt[`:xlabel]"Data Points"
+plt[`:ylabel]"Distance"
+plt[`:show][]
+```
+
+![dendro_plot](img/dendrogram_example.png)
+
+!!! warning "Ward linkage"
+    Ward linkage only works in conjunction with Euclidean squared distances (`e2dist`), while centroid linkage only works with Euclidean distances (`e2dist`, `edist`). If the user tries to input a different distance metric an error will result, as shown above.
+
+### `.ml.clust.hc.fit`
 
 _Fit HC Algorithm_
 
@@ -555,29 +585,7 @@ q).ml.clust.hc.fit[d;`mdist;`ward]
 'ward must be used with e2dist
 ```
 
-Agglomerative hierarchical clustering iteratively groups data, using a bottom-up approach that initially treats all data points as individual clusters.
-
-There are five possible linkages in hierarchical clustering: single, complete, average, centroid and ward. Euclidean or Manhattan distances can be used with each linkage except for ward (which only works with Euclidean squared distances) and centroid (which only works with Euclidean distances).
-
-In the single and centroid implementations, a k-d tree is used to store the representative points of each cluster (see [k-d tree](kdtree.md)).
-
-The dendrogram returned can be passed to a mixture of MatPlotLib and SciPy functions which plot the dendrogram structure represented in the table. For example:
-
-```q
-plt:.p.import`matplotlib.pyplot
-.p.import[`scipy.cluster][`:hierarchy][`:dendrogram]flip value flip r1
-plt[`:title]"Dendrogram"
-plt[`:xlabel]"Data Points"
-plt[`:ylabel]"Distance"
-plt[`:show][]
-```
-
-![dendro_plot](img/dendrogram_example.png)
-
-!!! warning "Ward linkage"
-    Ward linkage only works in conjunction with Euclidean squared distances (`e2dist`), while centroid linkage only works with Euclidean distances (`e2dist`, `edist`). If the user tries to input a different distance metric an error will result, as shown above.
-
-## `.ml.clust.hc.cutdist`
+### `.ml.clust.hc.cutdist`
 
 _Cut dendrogram into clusters based on a distance threshold_
 
@@ -615,7 +623,7 @@ q)group r`clt
 2| 7 9
 ```
 
-## `.ml.clust.hc.cutk`
+### `.ml.clust.hc.cutk`
 
 _Cut dendrogram into k clusters_
 
@@ -652,9 +660,9 @@ q)group r`clt
 2| ,6
 ```
 
-## `.ml.clust.hc.predict`
+### `.ml.clust.hc.predict`
 
-_Make predictions using prefit HC model_
+_Make predictions using a fitted HC model_
 
 Syntax: `.ml.clust.hc.predict[data;cfg]`
 
@@ -708,7 +716,15 @@ q).ml.clust.hc.predict[tst;clt]
 0 0 0 2 0
 ```
 
-## `.ml.clust.kmeans.fit`
+## K-Means
+
+K-means clustering begins by selecting k data points as cluster centers and assigning data to the cluster with the nearest center.
+
+The algorithm follows an iterative refinement process which runs a specified number of times, updating the cluster centers and assigned points with each iteration.
+
+The distance metrics that can be used with the K-Means algorithm are the Euclidean distances (`e2dist`,`edist`). The use of any other distance metric will result in an error.
+
+### `.ml.clust.kmeans.fit`
 
 _Fit K-Means Algorithm_
 
@@ -751,15 +767,9 @@ q).ml.clust.kmeans.fit[d;`mdist;3;10;1b]
 'kmeans must be used with edist/e2dist
 ```
 
-K-means clustering begins by selecting k data points as cluster centers and assigning data to the cluster with the nearest center.
+### `.ml.clust.kmeans.predict`
 
-The algorithm follows an iterative refinement process which runs a specified number of times, updating the cluster centers and assigned points with each iteration.
-
-The distance metrics that can be used with the K-Means algorithm are the Euclidean distances (`e2dist`,`edist`). The use of any other distance metric will result in an error.
-
-## `.ml.clust.kmeans.predict`
-
-_Make predictions using prefit K-Means model_
+_Make predictions using a fitted K-Means model_
 
 Syntax: `.ml.clust.kmeans.predict[data;cfg]`
 
@@ -793,7 +803,7 @@ q).ml.clust.kmeans.predict[tst;kmeansfit]
 0 2 0 1 2
 ```
 
-## `.ml.clust.kmeans.update`
+### `.ml.clust.kmeans.update`
 
 _Update K-Means model_
 
@@ -839,7 +849,7 @@ q)group kmeansupd`clt
 ```
 
 
-## Distance metrics
+## Distance Metrics
 
 The distance functions available in the clustering library are:
 
