@@ -455,7 +455,7 @@ P| 2
 D| 0
 Q| 1
 m| 10
-.ml.ts.SARIMA.fit[timeSeries;exogVar;3;0;1;s]
+.ml.ts.SARIMA.fit[timeSeries;exogVar;3;0;1;1b;s]
 params    | 7.884855 0.06814395 -1.941512 0.07451696 0.06945657 -0.02878508 0..
 tr_param  | 7.884855
 exog_param| 0.06814395 -1.941512

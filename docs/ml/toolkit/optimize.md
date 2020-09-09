@@ -78,7 +78,7 @@ Test minimization on a function with a single global minimum
 // function definition
 q)func:{xexp[x[0];2]-4*x[0]}
 // define initial starting condition as x0
-q)x0:enlist 4
+q)x0:enlist 4f
 // apply the BFGS optimization algorithm
 q).ml.optimize.BFGS[func;x0;();::]
 xVals  | ,2f
