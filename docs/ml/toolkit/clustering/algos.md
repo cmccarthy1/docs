@@ -65,7 +65,7 @@ The algorithm uses a user-specified damping coefficient to reduce the availabili
 
 _Fit AP algorithm_
 
-Syntax: `.ml.clust.ap.fit[data;df;dmp;diag]`
+Syntax: `.ml.clust.ap.fit[data;df;dmp;diag;]`
 
 Where
 
@@ -73,6 +73,7 @@ Where
 -   `df` is the distance function as a symbol: `nege2dist` is recommended for this algorithm. (see [Distance Metrics](#distance-metrics))
 -   `dmp` is the damping coefficient to be applied to the availability and responsibility matrices
 -   `diag` is the preference function for the diagonal of the similarity matrix (e.g.  `min` `med` `max` etc.)
+-   `iter` is a dictionary containing the max allowed iterations and the max iterations without a change in clusters, with default values ``` `maxrun`maxmatch!200 50```. To use the defaults, pass in `(::)`.
 
 returns a dictionary with data, input variables and the cluster each data point belongs to.
 
@@ -82,9 +83,9 @@ q)show d:2 10#20?10.
 6.203014 9.326316 2.747066 0.5752516 2.560658 2.310108 0.8724017 1.024432 8.6..
 
 q)// fit to AP algorithm
-q)show APfit:.ml.clust.ap.fit[d;`nege2dist;.3;med]
+q)show APfit:.ml.clust.ap.fit[d;`nege2dist;.3;med;(::)]
 data  | (7.833686 4.099561 6.108817 4.976492 4.087545 4.49731 0.1392076 7.148..
-inputs| `df`dmp`diag!(`nege2dist;0.3;k){avg x(<x)@_.5*-1 0+#x,:()})
+inputs| `df`dmp`diag`iter!(`nege2dist;0.3;k){avg x(<x)@_.5*-1 0+#x,:()};`maxrun`maxmatch!200 50)
 clt   | 0 1 0 0 0 0 2 0 1 1
 
 q)// group indices into their calculated clusters
@@ -114,9 +115,9 @@ q)show trn:2 10#20?10.
 4.12317  9.877844 3.867353 7.26781  4.046546 8.355065 6.42737   5.830262 1.42..
 
 q)// fit AP algorithm
-q)show APfit:.ml.clust.ap.fit[trn;`nege2dist;.3;med]
+q)show APfit:.ml.clust.ap.fit[trn;`nege2dist;.3;med;(::)]
 data  | (1.627662 6.884756 8.177547 7.520102 1.086824 9.598964 0.3668341 6.43..
-inputs| `df`dmp`diag!(`nege2dist;0.3;k){avg x(<x)@_.5*-1 0+#x,:()})
+inputs| `df`dmp`diag`iter!(`nege2dist;0.3;k){avg x(<x)@_.5*-1 0+#x,:()};`maxrun`maxmatch!200 50)
 clt   | 0 1 2 1 0 1 0 1 2 1
 
 q)// testing data
@@ -149,9 +150,9 @@ q)show trn:2 10#20?10.
 4.931835 5.785203 0.8388858 1.959907 3.75638  6.137452 5.294808 6.916099 2.29..
 
 q)// fit AP algorithm
-q)show APfit:.ml.clust.ap.fit[trn;`nege2dist;.3;med]
+q)show APfit:.ml.clust.ap.fit[trn;`nege2dist;.3;med;(::)]
 data  | (3.927524 5.170911 5.159796 4.066642 1.780839 3.017723 7.85033 5.3470..
-inputs| `df`dmp`diag!(`nege2dist;0.3;k){avg x(<x)@_.5*-1 0+#x,:()})
+inputs| `df`dmp`diag`iter!(`nege2dist;0.3;k){avg x(<x)@_.5*-1 0+#x,:()};`maxrun`maxmatch!200 50)
 clt   | 0 0 1 1 2 0 0 0 1 0
 
 q)// testing data
@@ -162,7 +163,7 @@ q)show tst:2 5#10?10.
 q)// update model with new testing data points added
 q)show APupd:.ml.clust.ap.update[tst;APfit]
 data  | (3.927524 5.170911 5.159796 4.066642 1.780839 3.017723 7.85033 5.3470..
-inputs| `df`dmp`diag!(`nege2dist;0.3;k){avg x(<x)@_.5*-1 0+#x,:()})
+inputs| `df`dmp`diag`iter!(`nege2dist;0.3;k){avg x(<x)@_.5*-1 0+#x,:()};`maxrun`maxmatch!200 50)
 clt   | 0 1 2 2 0 1 3 1 2 1 0 3 3 1 3
 
 q)// group indices into their calculated clusters
