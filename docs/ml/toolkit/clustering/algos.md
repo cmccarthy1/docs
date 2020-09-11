@@ -16,7 +16,6 @@ Algorithms
   Affinity Propagation (AP):
     [ap.fit](#mlclustapfit)                   Fit AP algorithm
     [ap.predict](#mlclustappredict)               Make predictions using a fitted AP model
-    [ap.update](#mlclustapupdate)                Update AP model
     
   Clustering Using REpresentatives (CURE):
     [cure.fit](#mlclustcurefit)                 Fit CURE algorithm
@@ -51,7 +50,7 @@ Dendrogram Cutting Functionality
 <i class="fab fa-github"></i>
 [KxSystems/ml/clust](https://github.com/KxSystems/ml/tree/master/clust)
 
-The clustering library provides q implementations of a number of common clustering algorithms, with fit and predict functions provided for each. Update functions are also available for K-Means, Affinity Propagation and DBSCAN.
+The clustering library provides q implementations of a number of common clustering algorithms, with fit and predict functions provided for each. Update functions are also available for K-Means and DBSCAN.
 
 Hierarchical clustering methods (including CURE) produce dendrograms, which can then be _cut_ at a given count or distance to produce a clustering.
 
