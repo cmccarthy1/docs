@@ -141,10 +141,10 @@ Syntax: `.ml.clust.cure.fit[data;df;n;c]`
 
 Where
 
--   `data` represents the points being analyzed in matrix format, where each column is an individual data point.
--   `df`  is the distance function as a symbol: `e2dist` `edist` `mdist` – see [Distance Metrics](#distance-metrics).
--   `n` is the number of representative points.
--   `c` is the compression ratio.
+-   `data` represents the points being analyzed in matrix format, where each column is an individual data point
+-   `df`  is the distance function as a symbol: ``` `e2dist`edist`mdist ``` – see [Distance Metrics](#distance-metrics)
+-   `n` is the number of representative points
+-   `c` is the compression ratio
 
 returns a dictionary with data, input variables and a dendrogram table. The dendrogram table describes the order in which clusters are joined, and the distance between the clusters as they are joined.
 
@@ -341,7 +341,7 @@ Syntax: `.ml.clust.dbscan.fit[data;df;minpts;eps]`
 Where
 
 -   `data` represents the points being analyzed in matrix format, where each column is an individual data point
--   `df` is the distance function as a symbol: `e2dist` `edist` `mdist` (see [section](##Distance Metrics))
+-   `df` is the distance function as a symbol: ``` `e2dist`edist`mdist ``` (see [section](##Distance Metrics))
 -   `minpts` is the minimum number of points required in a given neighborhood to define a cluster
 -   `eps` is the epsilon radius, the distance from each point within which points are defined as being in the same cluster
 
@@ -486,7 +486,7 @@ Syntax: `.ml.clust.hc.fit[data;df;lf]`
 Where
 
 -   `data` represents the points being analyzed in matrix format, where each column is an individual datapoint
--   `df` is the distance function as a symbol: ``` `e2dist`edist`mdist` ``` (see [section](##Distance Metrics))
+-   `df` is the distance function as a symbol: ``` `e2dist`edist`mdist ``` (see [section](##Distance Metrics))
 -   `lf` is the linkage function as a symbol: ``` `single`complete`average`centroid`ward ```
 
 returns a dictionary with data, input variables and a dendrogram table, describing the order in which clusters are joined, and the distance between the clusters as they are joined.
