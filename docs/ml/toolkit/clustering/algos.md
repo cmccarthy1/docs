@@ -131,7 +131,7 @@ q).ml.clust.ap.predict[tst;APfit]
 
 ## Clustering Using Representatives
 
-Clustering Using REpresentatives (CURE) is a technique used to deal with datasets containing outliers and clusters of varying sizes and shapes. Each cluster is represented by a specified number of representative points. These points are chosen by taking the most scattered points in each cluster and shrinking them towards the cluster center using a compression ratio.
+Clustering Using REpresentatives (CURE) is a technique used to deal with datasets containing outliers and clusters of varying sizes and shapes. Each cluster is represented by a specified number of representative points. These points are chosen by taking the most scattered points in each cluster and shrinking them towards the cluster center using a compression ratio. An in-depth explanation of the CURE algorithm can be found [here](http://infolab.stanford.edu/~ullman/mmds/ch7a.pdf) on page 242.
 
 ### `.ml.clust.cure.fit`
 
@@ -325,7 +325,7 @@ q).ml.clust.cure.predict[tst;clt]
 
 ## Density-Based Spatial Clustering of Applications with Noise
 
-The Density-Based Spatial Clustering of Applications with Noise (DBSCAN) algorithm, groups points that are closely packed in areas of high density. Any points in low-density regions are seen as outliers.
+The Density-Based Spatial Clustering of Applications with Noise ([DBSCAN](https://en.wikipedia.org/wiki/DBSCAN)) algorithm, groups points that are closely packed in areas of high density. Any points in low-density regions are seen as outliers.
 
 Unlike many clustering algorithms, which require the user to input the desired number of clusters, DBSCAN calculates how many clusters are in the dataset based on two criteria.
 
@@ -455,7 +455,7 @@ q)group DBSCANupd`clt
 
 ## Hierarchical Clustering
 
-Agglomerative hierarchical clustering iteratively groups data, using a bottom-up approach that initially treats all data points as individual clusters.
+Agglomerative hierarchical clustering iteratively groups data, using a bottom-up approach that initially treats all data points as individual clusters. An explanation of the hierarchical methods described below can be found [here](http://infolab.stanford.edu/~ullman/mmds/ch7a.pdf) on page 225.
 
 There are five possible linkages in hierarchical clustering: single, complete, average, centroid and ward. Euclidean or Manhattan distances can be used with each linkage except for ward (which only works with Euclidean squared distances) and centroid (which only works with Euclidean distances).
 
@@ -464,12 +464,25 @@ In the single and centroid implementations, a k-d tree is used to store the repr
 The dendrogram returned can be passed to a mixture of MatPlotLib and SciPy functions which plot the dendrogram structure represented in the table. For example:
 
 ```q
-plt:.p.import`matplotlib.pyplot
-.p.import[`scipy.cluster][`:hierarchy][`:dendrogram]flip value flip r1
-plt[`:title]"Dendrogram"
-plt[`:xlabel]"Data Points"
-plt[`:ylabel]"Distance"
-plt[`:show][]
+q)data:2 10#20?5.
+q)show dgram:.ml.clust.hc.fit[data;`e2dist;`complete]`dgram
+i1 i2 dist      n
+------------------
+2  7  0.3069262 2
+0  8  0.6538798 2
+10 4  0.8766167 3
+1  5  1.018976  2
+11 6  1.409634  3
+3  9  2.487168  2
+14 12 4.015938  6
+16 13 17.68578  8
+17 15 30.19258  10
+q)plt:.p.import`matplotlib.pyplot
+q).p.import[`scipy.cluster][`:hierarchy][`:dendrogram]flip value flip dgram;
+q)plt[`:title]"Dendrogram";
+q)plt[`:xlabel]"Data Points";
+q)plt[`:ylabel]"Distance";
+q)plt[`:show][];
 ```
 
 ![dendro_plot](img/dendrogram_example.png)
@@ -674,9 +687,11 @@ q).ml.clust.hc.predict[tst;clt]
 
 ## K-Means
 
-K-means clustering begins by selecting k data points as cluster centers and assigning data to the cluster with the nearest center.
+K-means clustering begins by selecting k data points as cluster centers and assigning data to the cluster with the nearest center. 
 
 The algorithm follows an iterative refinement process which runs a specified number of times, updating the cluster centers and assigned points to a cluster at each iteration based on the nearest cluster center.
+
+Futher background on the K-Means algorithm can be found [here](https://www.edureka.co/blog/k-means-clustering/).
 
 The distance metrics that can be used with the K-Means algorithm are the Euclidean distances (`e2dist`,`edist`). The use of any other distance metric will result in an error.
 
