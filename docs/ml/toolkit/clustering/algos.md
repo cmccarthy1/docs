@@ -102,8 +102,8 @@ Syntax: `.ml.clust.ap.predict[data;cfg]`
 
 Where
 
--   `data` represents the points being analyzed in matrix format, where each column is an individual data point.
--   `cfg` represents a dictionary with data, input variables and the cluster each data point belongs to, returned from `.ml.clust.ap.fit`.
+-   `data` represents the points being analyzed in matrix format, where each column is an individual data point
+-   `cfg` represents a dictionary with data, input variables and the cluster each data point belongs to, returned from `.ml.clust.ap.fit`
 
 returns predicted clusters of new data.
 
