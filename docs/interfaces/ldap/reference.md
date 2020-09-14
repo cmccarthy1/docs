@@ -30,7 +30,7 @@ Functions
 
 ### `.ldap.bind`
 
-_Synchronous bind operations are used to authenticate clients (and the users or applications behind them) to the directory server, to establish an authorization identity that will be used for subsequent operations processed on that connection, and to specify the LDAP protocol version that the client will use. See [here](https://ldap.com/the-ldap-bind-operation/) for reference documentation_
+_Synchronous bind operations are used to authenticate clients (and the users or applications behind them) to the directory server, to establish an authorization identity that will be used for subsequent operations processed on that connection, and to specify the LDAP protocol version that the client will use. See [here](https://ldap.com/the-ldap-bind-operation/) for reference documentation._
 
 Syntax: `.ldap.bind[sess;dn;cred;mech]`
 
@@ -56,7 +56,7 @@ Credentials| `byte$()
 
 ### `.ldap.err2string`
 
-_Returns a string description of an LDAP error code. The error codes are negative for an API error, 0 for success, and positive for a LDAP result code_
+_Returns a string description of an LDAP error code. The error codes are negative for an API error, 0 for success, and positive for a LDAP result code._
 
 Syntax: `.ldap.err2string[err]`
 
@@ -77,7 +77,7 @@ q).ldap.err2string[5]
 
 ### `.ldap.getOption`
 
-_Gets session options that affect LDAP operating procedures. Reference [ldap_set_option](https://www.openldap.org/software/man.cgi?query=ldap_set_option&sektion=3&apropos=0&manpath=OpenLDAP+2.4-Release)_
+_Gets session options that affect LDAP operating procedures. Reference [ldap_set_option](https://www.openldap.org/software/man.cgi?query=ldap_set_option&sektion=3&apropos=0&manpath=OpenLDAP+2.4-Release)._
 
 Syntax: `.ldap.getOption[sess;option]`
 
@@ -116,7 +116,7 @@ q).ldap.getGlobalOption[`LDAP_OPT_X_TLS_REQUIRE_CERT]
 
 ### `.ldap.init`
 
-_Initializes the session with LDAP server connection details. Connection will occur on first operation. Does not create a connection. Use unbind to free the session. Reference [ldap_initialize](https://www.openldap.org/software/man.cgi?query=ldap_init&sektion=3&apropos=0&manpath=OpenLDAP+2.4-Release)_
+_Initializes the session with LDAP server connection details. Connection will occur on first operation. Does not create a connection. Use unbind to free the session. Reference [ldap_initialize](https://www.openldap.org/software/man.cgi?query=ldap_init&sektion=3&apropos=0&manpath=OpenLDAP+2.4-Release)._
 
 Syntax: `.ldap.init[sess;uris]`
 
@@ -154,11 +154,11 @@ Where
 - `scope`  is an int/long. The scope value defining the search logic are outlined [here](#scope-reference).
 - filter is a string/symbol. The filter to be applied to the search ([reference](https://ldap.com/ldap-filters/))
 - `attrs` is a symbol list. The set of attributes to include in the result. If a specific set of attribute descriptions are listed, then only those attributes should be included in matching entries. The following special characters and patterns can be used in searches.
-        - The special value `“*”` indicates that all user attributes should be included in matching entries.
-        - The special value `“+”` indicates that all operational attributes should be included in matching entries.
-        - The special value `“1.1”` indicates that no attributes should be included in matching entries.
-        - Some servers may also support the ability to use the `“@”` symbol followed by an object class name (e.g., `“@inetOrgPerson”`) to request all attributes associated with that object class.
-        - If the set of attributes to request is empty, then the server should behave as if the value `“*”` was specified to request that all user attributes be included in entries that are returned.
+	- The special value `“*”` indicates that all user attributes should be included in matching entries.
+	- The special value `“+”` indicates that all operational attributes should be included in matching entries.
+	- The special value `“1.1”` indicates that no attributes should be included in matching entries.
+	- Some servers may also support the ability to use the `“@”` symbol followed by an object class name (e.g., `“@inetOrgPerson”`) to request all attributes associated with that object class.
+	- If the set of attributes to request is empty, then the server should behave as if the value `“*”` was specified to request that all user attributes be included in entries that are returned.
 - `attrsOnly` is an int/long. Should be set to a non-zero value if only attribute descriptions are wanted. It should be set to zero (0) if both attributes descriptions and attribute values are wanted.
 - `timeLimit` is an int/long. Max number of microseconds to wait for a result. 0 represents no limit. Note that the server may impose its own limit.
 - `sizeLimit` is an int/long. Max number of entries to use in the result. 0 represents no limit. Note that the server may impose its own limit.
@@ -181,7 +181,7 @@ Referrals | ()
 
 ### `.ldap.setOption`
 
-_Sets options per session that affect LDAP operating procedures. Reference [ldap_set_option](https://www.openldap.org/software/man.cgi?query=ldap_set_option&sektion=3&apropos=0&manpath=OpenLDAP+2.4-Release)_
+_Sets options per session that affect LDAP operating procedures. Reference [ldap_set_option](https://www.openldap.org/software/man.cgi?query=ldap_set_option&sektion=3&apropos=0&manpath=OpenLDAP+2.4-Release)._
 
 Syntax: `.ldap.setOption[sess;option;value]`
 
