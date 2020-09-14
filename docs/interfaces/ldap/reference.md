@@ -15,247 +15,374 @@ keywords: ldap, interface, fusion , q
 .ldap   **LDAP interface**
 
 Functions
-  [init](#ldapinit)         Initializes the session with LDAP server connection details
-  [setOption](#ldapsetoption)            Sets options per session that affect LDAP operating procedures
-  [setGlobalOption](#ldapsetglobaloption)            Sets options globally that affect LDAP operating procedures
-  [getOption](#ldapgetoption)            Gets session options that affect LDAP operating procedures
-  [getGlobalOption](#ldapgetglobaloption)            Gets options globally that affect LDAP operating procedures
-  [getbind_s](#ldapbind_s)            Synchronous bind operations are used to authenticate clients
-  [getsearch_s](#ldapsearch_s)            Synchronous search for partial or complete copies of entries based on a search criteria
-  [getunbind_s](#ldapunbind_s)            Synchronous unbind from the directory
-  [err2string](#ldaperr2string)            Returns a string description of an LDAP error code
-
+  [bind](#ldapbind)             Synchronous bind operations are used to authenticate clients
+  [err2string](#ldaperr2string)       Returns a string description of an LDAP error code
+  [getOption](#ldapgetoption)        Gets session options that affect LDAP operating procedures
+  [getGlobalOption](#ldapgetglobaloption)  Gets options globally that affect LDAP operating procedures
+  [init](#ldapinit)             Initializes the session with LDAP server connection details
+  [search](#ldapsearch)           Synchronous search for partial or complete copies of entries based on a search criteria
+  [setGlobalOption](#ldapsetglobaloption)  Sets options globally that affect LDAP operating procedures
+  [setOption](#ldapsetoption)        Sets options per session that affect LDAP operating procedures
+  [unbind](#ldapunbind)           Synchronous unbind from the directory
 </pre>
 
-## .ldap.init
+## `Callable Functions`
 
-_Initializes the session with LDAP server connection details. Connection will occur on first operation. Does not create a connection. Use unbind to free the session. Reference [ldap_initialize](https://www.openldap.org/software/man.cgi?query=ldap_init&sektion=3&apropos=0&manpath=OpenLDAP+2.4-Release)_
+### `.ldap.bind`
 
-Syntax: `.ldap.init[sess;uris]`
+_Synchronous bind operations are used to authenticate clients (and the users or applications behind them) to the directory server, to establish an authorization identity that will be used for subsequent operations processed on that connection, and to specify the LDAP protocol version that the client will use. See [here](https://ldap.com/the-ldap-bind-operation/) for reference documentation._
 
-Where
-
-- sess is an int/long that you will use to track the session in subsequent calls. Should be a unique number for each session you wish to initialize. The number can only be reused to refer to a session after a .ldap.unbind.
-- uris is a symbol list. Each URI in the list must follow the format of schema://host:port , where schema is 'ldap','ldaps','ldapi', or 'cldap'.
-
-Returns 0 if successful.
-
-## .ldap.setOption
-
-_Sets options per session that affect LDAP operating procedures. Reference [ldap_set_option](https://www.openldap.org/software/man.cgi?query=ldap_set_option&sektion=3&apropos=0&manpath=OpenLDAP+2.4-Release)_
-
-Syntax: `.ldap.setOption[sess;option;value]`
+Syntax: `.ldap.bind[sess;dn;cred;mech]`
 
 Where
 
-- sess is an int/long that represents the session previously created via .ldap.init
-- option is a symbol for the option you wish to set. See supported options below.
-- value is the value relating to the option. The data type depends on the option selected (see below)
+- `sess` is an int/long that represents the session previously created via `.ldap.init`
+- `dn` is a string/symbol. The DN of the user to authenticate. This should be an empty string/symbol or generic null for anonymous simple authentication, and is typically empty for SASL authentication because most SASL mechanisms identify the target account in the encoded credentials. It must be non-empty for non-anonymous simple authentication.
+- `cred` is a char/byte array or symbol. LDAP credentials (e.g. password). Pass empty string/symbol or generic null when no password is required for connection.
+- `mech` is a string/symbol. Pass an empty string/symbol or generic null to use the default LDAP_SASL_SIMPLE mechanism. Query the attribute 'supportedSASLMechanisms' from the  server's rootDSE for the list of SASL mechanisms the server supports.
 
-Supported LDAP options
+Returns a dict consisting of
 
-- LDAP_OPT_CONNECT_ASYNC (value data type int/long)
-- LDAP_OPT_DEBUG_LEVEL (value data type int/long)
-- LDAP_OPT_DEREF (value can be .ldap.LDAP_DEREF_NEVER, .ldap.LDAP_DEREF_SEARCHING, .ldap.LDAP_DEREF_FINDING or .ldap.LDAP_DEREF_ALWAYS)
-- LDAP_OPT_DIAGNOSTIC_MESSAGE (value data type string/symbol)
-- LDAP_OPT_NETWORK_TIMEOUT (value data type int/long - representing microseconds)
-- LDAP_OPT_MATCHED_DN (value data type string/symbol)
-- LDAP_OPT_PROTOCOL_VERSION (value data type int/long)
-- LDAP_OPT_REFERRALS (value can be .ldap.LDAP_OPT_ON or .ldap.LDAP_OPT_OFF)
-- LDAP_OPT_RESULT_CODE (value data type int/long)
-- LDAP_OPT_SIZELIMIT (value data type int/long)
-- LDAP_OPT_TIMELIMIT (value data type int/long)
-- LDAP_OPT_TIMEOUT (value data type int/long - representing microseconds)
+key           | type       | explanation
+--------------|------------|-----------------
+`ReturnCode`  | integer    | error code returned from function invocation
+`Credentials` | byte array | the credentials returned by the server. Contents are empty for LDAP_SASL_SIMPLE, though for other SASL mechanisms, the credentials may need to be used with other security related functions (which may be external to LDAP). See [here](#security-mechanisms) for more information.
 
-Supported SASL options
+```q
+q).ldap.bind[0i;`;`;`]
+ReturnCode | 0i
+Credentials| `byte$()
+```
 
-- LDAP_OPT_X_SASL_MAXBUFSIZE (value data type long)
-- LDAP_OPT_X_SASL_NOCANON (value data type int/long)
-- LDAP_OPT_X_SASL_SECPROPS (value data type string/symbol)
-- LDAP_OPT_X_SASL_SSF_EXTERNAL (value data type long)
-- LDAP_OPT_X_SASL_SSF_MAX (value data type long)
-- LDAP_OPT_X_SASL_SSF_MIN (value data type long)
+### `.ldap.err2string`
 
-Supported TCP options
+_Returns a string description of an LDAP error code. The error codes are negative for an API error, 0 for success, and positive for a LDAP result code._
 
-- LDAP_OPT_X_KEEPALIVE_IDLE (value data type int/long)
-- LDAP_OPT_X_KEEPALIVE_PROBES (value data type int/long)
-- LDAP_OPT_X_KEEPALIVE_INTERVAL (value data type int/long)
+Syntax: `.ldap.err2string[err]`
 
-Supported TLS options
+Where
 
-- LDAP_OPT_X_TLS_CACERTDIR (value data type string/symbol)
-- LDAP_OPT_X_TLS_CACERTFILE (value data type string/symbol)
-- LDAP_OPT_X_TLS_CERTFILE (value data type string/symbol)
-- LDAP_OPT_X_TLS_CIPHER_SUITE (value data type string/symbol)
-- LDAP_OPT_X_TLS_CRLCHECK (value data type int/long)
-- LDAP_OPT_X_TLS_CRLFILE (value data type string/symbol)
-- LDAP_OPT_X_TLS_DHFILE (value data type string/symbol)
-- LDAP_OPT_X_TLS_KEYFILE (value data type string/symbol)
-- LDAP_OPT_X_TLS_NEWCTX (value data type int/long)
-- LDAP_OPT_X_TLS_PROTOCOL_MIN (value data type int/long)
-- LDAP_OPT_X_TLS_RANDOM_FILE (value data type string/symbol)
-- LDAP_OPT_X_TLS_REQUIRE_CERT (value data type int/long)
+- `err` is an LDAP error code. See [here](#error-code-reference) for further information.
 
-## .ldap.setGlobalOption
+Return the string representation of the LDAP error code
 
-_Sets options globally that affect LDAP operating procedures. LDAP handles inherit their default settings from the global options in       effect at the time the handle is created (i.e. if a global setting is made, all sessions initialized after that will inherit those settings but not any sessions created prior). Reference .ldap.setOption for params & details._
+```q
+q).ldap.err2string[0]
+"Success"
+q).ldap.err2string[-9]
+"Bad parameter to an ldap routine"
+q).ldap.err2string[5]
+"Compare False"
+```
 
-Syntax: `.ldap.setGlobalOption[option;value]`
+### `.ldap.getOption`
 
-## .ldap.getOption
-
-_Gets session options that affect LDAP operating procedures. Reference [ldap_set_option](https://www.openldap.org/software/man.cgi?query=ldap_set_option&sektion=3&apropos=0&manpath=OpenLDAP+2.4-Release)_
+_Gets session options that affect LDAP operating procedures. Reference [ldap_set_option](https://www.openldap.org/software/man.cgi?query=ldap_set_option&sektion=3&apropos=0&manpath=OpenLDAP+2.4-Release)._
 
 Syntax: `.ldap.getOption[sess;option]`
 
 Where
 
-- sess is an int/long that represents the session previously created via .ldap.init
-- option is a symbol for the option you wish to get. See supported options below
+- `sess` is an int/long that represents the session previously created via .ldap.init
+- `option` is a symbol for the option you wish to get. See supported options [here](#get-option-reference)
 
-Value returned from function depends on options used. Supported LDAP options
+Value returned from function depends on options used. See [here](#get-option-reference) for type reference.
 
-- LDAP_OPT_API_FEATURE_INFO (returns dict containing feature version info - subset of LDAP_OPT_API_INFO)
-- LDAP_OPT_API_INFO (returns dict containing API version info)
-- LDAP_OPT_CONNECT_ASYNC (returns int)
-- LDAP_OPT_DEBUG_LEVEL (returns int)
-- LDAP_OPT_DEREF (returns int)
-- LDAP_OPT_DESC (returns int)
-- LDAP_OPT_DIAGNOSTIC_MESSAGE (returns string)
-- LDAP_OPT_MATCHED_DN (returns string)
-- LDAP_OPT_NETWORK_TIMEOUT (return int representing microseconds)
-- LDAP_OPT_PROTOCOL_VERSION (returns int)
-- LDAP_OPT_REFERRALS (returns int)
-- LDAP_OPT_RESULT_CODE (returns int)
-- LDAP_OPT_SIZELIMIT (returns int)
-- LDAP_OPT_TIMELIMIT (returns int)
-- LDAP_OPT_TIMEOUT (return int representing microseconds)
+```q
+q).ldap.getOption[0i;`LDAP_OPT_PROTOCOL_VERSION]
+,3
+q).ldap.getOption[0i;`LDAP_OPT_NETWORK_TIMEOUT]
+30000
+```
 
-Supported SASL options
+### .ldap.getGlobalOption
 
-- LDAP_OPT_X_SASL_AUTHCID (returns string)
-- LDAP_OPT_X_SASL_AUTHZID (returns string)
-- LDAP_OPT_X_SASL_MAXBUFSIZE (returns long)
-- LDAP_OPT_X_SASL_MECH (returns string)
-- LDAP_OPT_X_SASL_MECHLIST (returns string)
-- LDAP_OPT_X_SASL_NOCANON (returns int)
-- LDAP_OPT_X_SASL_REALM (returns string)
-- LDAP_OPT_X_SASL_SSF (returns long)
-- LDAP_OPT_X_SASL_SSF_MAX (returns long)
-- LDAP_OPT_X_SASL_SSF_MIN (returns long)
-- LDAP_OPT_X_SASL_USERNAME (returns string)
-
-Supported TCP options
-
-- LDAP_OPT_X_KEEPALIVE_IDLE (returns int)
-- LDAP_OPT_X_KEEPALIVE_PROBES (returns int)
-- LDAP_OPT_X_KEEPALIVE_INTERVAL (returns int)
-
-Supported TLS options
-
-- LDAP_OPT_X_TLS_CACERTDIR (returns string)
-- LDAP_OPT_X_TLS_CACERTFILE (returns string)
-- LDAP_OPT_X_TLS_CERTFILE (returns string)
-- LDAP_OPT_X_TLS_CIPHER_SUITE (returns string)
-- LDAP_OPT_X_TLS_CRLCHECK (returns int)
-- LDAP_OPT_X_TLS_CRLFILE (returns string)
-- LDAP_OPT_X_TLS_DHFILE (returns string)
-- LDAP_OPT_X_TLS_KEYFILE (returns string)
-- LDAP_OPT_X_TLS_PROTOCOL_MIN (returns int)
-- LDAP_OPT_X_TLS_RANDOM_FILE (returns string)
-- LDAP_OPT_X_TLS_REQUIRE_CERT (returns int)
-
-## .ldap.getGlobalOption
-
-_Gets options globally that affect LDAP operating procedures. Reference .ldap.getOption for details and parameter details_
+_Gets options globally that affect LDAP operating procedures._
 
 Syntax: `.ldap.getGlobalOption[option]`
 
-## .ldap.bind_s
+Where
 
-_Synchronous bind operations are used to authenticate clients (and the users or applications behind them) to the directory server, to establish an authorization identity that will be used for subsequent operations processed on that connection, and to specify the LDAP protocol version that the client will use. See [here](https://ldap.com/the-ldap-bind-operation/) for reference documentation_
+- `option` is a symbol for the option you wish to get. See supported options [here](#get-option-reference)
 
-Syntax: `.ldap.bind_s[sess;dn;cred;mech]`
+Value returned from function depends on options used. See [here](#get-option-reference) for type reference.
+
+```q
+q).ldap.getGlobalOption[`LDAP_OPT_PROTOCOL_VERSION]
+,3
+q).ldap.getGlobalOption[`LDAP_OPT_X_TLS_REQUIRE_CERT]
+,3
+```
+
+### `.ldap.init`
+
+_Initializes the session with LDAP server connection details. Connection will occur on first operation. Does not create a connection. Use unbind to free the session. Reference [ldap_initialize](https://www.openldap.org/software/man.cgi?query=ldap_init&sektion=3&apropos=0&manpath=OpenLDAP+2.4-Release)._
+
+Syntax: `.ldap.init[sess;uris]`
 
 Where
 
-- sess is an int/long that represents the session previously created via .ldap.init
-- dn is a string/symbol. The DN of the user to authenticate. This should be empty for anonymous simple authentication, and is typically empty for SASL authentication because most SASL mechanisms identify the target account in the encoded credentials. It must be non-empty for non-anonymous simple authentication.
-- cred is a char/byte array or symbol. LDAP credentials (e.g. password). Pass empty string/symbol when no password required for connection.
-- mech is a string/symbol. Pass an empty string to use the default LDAP_SASL_SIMPLE mechanism. Query the attribute 'supportedSASLMechanisms' from the  server's rootDSE for the list of SASL mechanisms the server supports.
+- `sess` is an int/long that you will use to track the session in subsequent calls. Should be a unique number for each session you wish to initialize. The number can only be reused to refer to a session after a `.ldap.unbind`.
+- `uris` is a symbol list. Each URI in the list must follow the format of `schema://host:port` , where schema is `'ldap'`, `'ldaps'`, `'ldapi'` or `'cldap'`.
 
-Returns a dict consisting of 
+Returns 0i if successful, otherwise returns an LDAP error code.
 
-- ReturnCode - integer. See error code reference  within this document.
-- Credentials - byte array which is the credentials returned by the server. Contents are empty for LDAP_SASL_SIMPLE, though for other SASL mechanisms, the credentials may need to be used with other security related functions (which may be external to LDAP). Reference documentation for your security mechanism.
+```q
+// successfully execute initialization
+q).ldap.init[0i;enlist `$"ldap://0.0.0.0:389"]
+0i
 
-### Using Security Mechanisms
+// attempt to initialize with an incorrect 'schema'
+q).ldap.init[1i;enlist `$"noldap://0.0.0.0:389"]
+-9i
 
-LDAP supports a range of security mechanisms as part of the bind call. Check with your LDAP server/admin what is supported (often found in the root attribute named 'supportedSASLMechanisms').
+// retrieve error message for above error code
+q).ldap.err2string[-9i]
+"Bad parameter to an ldap routine"
+```
 
-Most of the security mechanisms are performed externally, in separate code related to your security mechanism.
-
-For example,  DIGEST_MD5 is initially performed by calling bind with no credentials, mech set to "DIGEST-MD5" & capturing the returned credential values from the server. Using the returned credentials to MD5 encode the user details, a second bind call is then made with the MD5 encoded details as the 'cred' parameter. This requires an additional MD5 library that is outside the scope of this interface (Ref: [example code)](https://github.com/zheolong/melody-lib/blob/master/libldap5/sources/ldap/common/digest_md5.c). Other security mechanisms may operate in a similar manner (e.g. [GSSAPI](https://en.wikipedia.org/wiki/Generic_Security_Services_Application_Program_Interface) example [here](https://github.com/hajuuk/R7000/blob/master/ap/gpl/samba-3.0.13/source/libads/sasl.c), [CRAM-MD5](https://en.wikipedia.org/wiki/CRAM-MD5) available [here](https://github.com/illumos/illumos-gate/blob/master/usr/src/lib/libldap5/sources/ldap/common/cram_md5.c)).
-
-## .ldap.search_s
+### `.ldap.search`
 
 _Synchronous search for partial or complete copies of entries based on a search criteria._
 
-Syntax: .ldap.search_s[sess;baseDn;scope;filter;attrs;attrsOnly;timeLimit;sizeLimit]
+Syntax: `.ldap.search[sess;baseDn;scope;filter;attrs;attrsOnly;timeLimit;sizeLimit]`
 
 Where
 
-- sess is an int/long that represents the session previously created via .ldap.init
-- baseDn is a string/symbol. The base of the subtree to search from. An empty string/symbol can be used to search from the root (or when a DN is not known).
-- scope  is an int/long. Can be set to one of the following values:
-  - 0 (LDAP_SCOPE_BASE) Only the entry specified will be considered in the search & no subordinates used
-  - 1 (LDAP_SCOPE_ONELEVEL) Only search the immediate children of entry specified. Will not use the entry specified or further subordinates from the children.
-  - 2 (LDAP_SCOPE_SUBTREE) To search the entry and all subordinates
-  - 3 (LDAP_SCOPE_CHILDREN) To search all of the subordinates
+- `sess` is an int/long that represents the session previously created via .ldap.init
+- `baseDn` is a string/symbol. The base of the subtree to search from. An empty string/symbol or generic null can be used to search from the root (or when a DN is not known).
+- `scope`  is an int/long. The scope value defining the search logic are outlined [here](#scope-reference).
 - filter is a string/symbol. The filter to be applied to the search ([reference](https://ldap.com/ldap-filters/))
-- attrs is a symbol list. The set of attributes to include in the result. If a specific set of attribute descriptions are listed, then only those attributes should be included in matching entries. The special value “*” indicates that all user attributes should be included in matching entries. The special value “+” indicates that all operational attributes should be included in matching entries. The special value “1.1” indicates that no attributes should be included in matching entries. Some servers may also support the ability to use the “@” symbol followed by an object class name (e.g., “@inetOrgPerson”) to request all attributes associated with that object class. If the set of attributes to request is empty, then the server should behave as if the value “*” was specified to request that all user attributes be included in entries that are returned.
-- attrsOnly is an int/long. Should be set to a non-zero value if only attribute descriptions are wanted. It should be set to zero (0) if both attributes descriptions and attribute values are wanted.
-- timeLimit is an int/long. Max number of microseconds to wait for a result. 0 represents no limit. Note that the server may impose its own limit.
-- sizeLimit is an int/long. Max number of entries to use in the result. 0 represents no limit. Note that the server may impose its own limit.
+- `attrs` is a symbol list. The set of attributes to include in the result. If a specific set of attribute descriptions are listed, then only those attributes should be included in matching entries. The following special characters and patterns can be used in searches.
+	- The special value `“*”` indicates that all user attributes should be included in matching entries.
+	- The special value `“+”` indicates that all operational attributes should be included in matching entries.
+	- The special value `“1.1”` indicates that no attributes should be included in matching entries.
+	- Some servers may also support the ability to use the `“@”` symbol followed by an object class name (e.g., `“@inetOrgPerson”`) to request all attributes associated with that object class.
+	- If the set of attributes to request is empty, then the server should behave as if the value `“*”` was specified to request that all user attributes be included in entries that are returned.
+- `attrsOnly` is an int/long. Should be set to a non-zero value if only attribute descriptions are wanted. It should be set to zero (0) if both attributes descriptions and attribute values are wanted.
+- `timeLimit` is an int/long. Max number of microseconds to wait for a result. 0 represents no limit. Note that the server may impose its own limit.
+- `sizeLimit` is an int/long. Max number of entries to use in the result. 0 represents no limit. Note that the server may impose its own limit.
 
-Returns a dict consisting of 
+Returns a dict consisting of
 
-- ReturnCode - integer. See error code reference within this document
-- Entries - table consisting of DNs and Attributes. Attribute forms a dictionary, were each attribute may contain one or more values.
-- Referrals - list of strings providing the referrals that can be searched to gain access to the required info (if server supports referrals)
+key         | type    | explanation
+------------|---------|-----------------
+`ReturnCode`| integer | error code returned from function invocation
+`Entries`   | table   | DNs and Attributes, where the Attributes form a dictionary with each attribute having one or more values.
+`Referrals` | list    | list of strings providing the referrals that can be searched to gain access to the required info (if server supports referrals)
 
-## .ldap.unbind_s
+```q
+// Run a blind search at base level
+q).ldap.search[globalSession;`$"";.ldap.LDAP_SCOPE_BASE;`$"(objectClass=*)";`$();0;0;0]
+ReturnCode| 0i
+Entries   | +`DN`Attributes!(,"";,(,`objectClass)!,("top";"OpenLDAProotDSE"))
+Referrals | ()
+```
+
+### `.ldap.setOption`
+
+_Sets options per session that affect LDAP operating procedures. Reference [ldap_set_option](https://www.openldap.org/software/man.cgi?query=ldap_set_option&sektion=3&apropos=0&manpath=OpenLDAP+2.4-Release)._
+
+Syntax: `.ldap.setOption[sess;option;value]`
+
+Where
+
+- `sess` is an int/long that represents the session previously created via `.ldap.init`
+- `option` is a symbol for the option you wish to set. See supported [here](#set-option-reference).
+- `value` is the value relating to the option. The data type depends on the option selected, see [here](#set-option-reference)
+
+Returns 0i if successful, otherwise returns an LDAP error code.
+
+```q
+q).ldap.setOption[0i;`LDAP_OPT_PROTOCOL_VERSION;3]
+0i
+q).ldap.setOption[0i;`LDAP_OPT_NETWORK_TIMEOUT ;30000]
+0i
+```
+
+### `.ldap.setGlobalOption`
+
+_Sets options globally that affect LDAP operating procedures. LDAP handles inherit their default settings from the global options in effect at the time the handle is created (i.e. if a global setting is made, all sessions initialized after that will inherit those settings but not any sessions created prior)._
+
+Syntax: `.ldap.setGlobalOption[option;value]`
+
+Where
+
+- `option` is a symbol for the option you wish to set. See supported [here](#set-option-reference).
+- `value` is the value relating to the option. The data type depends on the option selected, see [here](#set-option-reference)
+
+Returns 0i if successful, otherwise returns an LDAP error code.
+
+```q
+q).ldap.setGlobalOption[0i;`LDAP_OPT_X_TLS_REQUIRE_CERT;3]
+0i
+q).ldap.setGlobalOption[0i;`LDAP_OPT_NETWORK_TIMEOUT ;30000]
+0i
+```
+
+### `.ldap.unbind`
 
 _Synchronous unbind from the directory, terminate the current association, and free resources. Should be called even if a session did not bind (or failed to bind), but initialized its session._
 
-Syntax: `.ldap.unbind_s[sess]`
+Syntax: `.ldap.unbind[sess]`
 
 Where 
 
-- sess is an int/long that represents the session previously created via .ldap.init. The number should not longer be used unless .ldap.init and .ldap.bind_s has been used to create a new session.
+- `sess` is an int/long that represents the session previously created via `.ldap.init`. The number should no longer be used unless `.ldap.init` and `.ldap.bind` has been used to create a new session.
 
-## .ldap.err2string
+Returns the LDAP error code returned when attempting to unbind a session.
 
-_Returns a string description of an LDAP error code. The error codes are negative for an API error, 0 for success, and positive for a LDAP result code_
+```q
+q).ldap.unbind[0i]
+0i
+```
 
-Syntax: `.ldap.err2string[err]`
+## Scope Reference
 
-Where 
+When applying a search, the scope outlines the how this search is to take place. In this interface the scope is defined by an integer mapping. This integer mapping and the associated scope definition are outlined below.
 
-- err is an ldap error code (see error code reference  within this document)
+| Scope              | Integer Representation  | Definition |
+|--------------------|-------------------------|------------|
+|LDAP_SCOPE_BASE     | 0   | Only the entry specified will be considered in the search & no subordinates used.
+|LDAP_SCOPE_ONELEVEL | 1   | Only search the immediate children of entry specified. Will not use the entry specified or further subordinates from the children.
+|LDAP_SCOPE_SUBTREE  | 2   | To search the entry and all subordinates.
+|LDAP_SCOPE_CHILDREN | 3   | To search all of the subordinates.
 
-# Error Code Reference
+## Option Reference
 
-The function .ldap.err2string call can provide a string representation of the error code.
+### Get Option Reference
 
-0 = Success
+The supported options outlined here relate to the supported callable 'get' options supported within this API. The supported options are protocol specific `LDAP`/`SASL`/`TCP`/`TLS` and as such are outlined here separately. For further information on each of the options see [here](https://www.openldap.org/software/man.cgi?query=ldap_get_option&apropos=0&sektion=3&manpath=OpenLDAP+2.4-Release&arch=default&format=html)
 
-## Protocol Codes
+#### `LDAP`
+
+| Option                      | Return Type   | Info        |
+|-----------------------------|---------------|-------------|
+| LDAP_OPT_API_FEATURE_INFO   | Dictionary    |  |
+| LDAP_OPT_API_INFO           | Dictionary    |  |
+| LDAP_OPT_CONNECT_ASYNC      | Integer       |  |
+| LDAP_OPT_DEBUG_LEVEL        | Integer       |  |
+| LDAP_OPT_DEREF              | Integer       |  |
+| LDAP_OPT_DESC               | Integer       |  |
+| LDAP_OPT_DIAGNOSTIC_MESSAGE | String        |  |
+| LDAP_OPT_MATCHED_DN         | String        |  |
+| LDAP_OPT_NETWORK_TIMEOUT    | Integer       | timeout in microseconds |
+| LDAP_OPT_PROTOCOL_VERSION   | Integer       |  |
+| LDAP_OPT_REFERRALS          | Integer       |  |
+| LDAP_OPT_RESULT_CODE        | Integer       |  |
+| LDAP_OPT_SIZELIMIT          | Integer       |  |
+| LDAP_OPT_TIMELIMIT          | Integer       |  |
+| LDAP_OPT_TIMEOUT            | Integer       | timeout in microseconds |
+
+#### `SASL`
+
+| Option                      | Return Type   |
+|-----------------------------|---------------|
+| LDAP_OPT_X_SASL_AUTHCID     | String        |
+| LDAP_OPT_X_SASL_AUTHZID     | String        |
+| LDAP_OPT_X_SASL_MAXBUFSIZE  | Long          |
+| LDAP_OPT_X_SASL_MECH        | String        |
+| LDAP_OPT_X_SASL_MECHLIST    | String        |
+| LDAP_OPT_X_SASL_NOCANON     | Integer       |
+| LDAP_OPT_X_SASL_REALM       | String        |
+| LDAP_OPT_X_SASL_SSF         | Long          |
+| LDAP_OPT_X_SASL_SSF_MAX     | Long          |
+| LDAP_OPT_X_SASL_SSF_MIN     | Long          |
+| LDAP_OPT_X_SASL_USERNAME    | String        |
+
+#### `TCP`
+
+| Option                        | Return Type   | 
+|-------------------------------|---------------|
+| LDAP_OPT_X_KEEPALIVE_IDLE     | Integer       |
+| LDAP_OPT_X_KEEPALIVE_PROBES   | Integer       |
+| LDAP_OPT_X_KEEPALIVE_INTERVAL | Integer       |
+
+#### `TLS`
+
+| Option                      | Return Type   |
+|-----------------------------|---------------|
+| LDAP_OPT_X_TLS_CACERTDIR    | String        |
+| LDAP_OPT_X_TLS_CACERTFILE   | String        |
+| LDAP_OPT_X_TLS_CERTFILE     | String        |
+| LDAP_OPT_X_TLS_CIPHER_SUITE | String        |
+| LDAP_OPT_X_TLS_CRLCHECK     | Integer       |
+| LDAP_OPT_X_TLS_CRLFILE      | String        |
+| LDAP_OPT_X_TLS_DHFILE       | String        |
+| LDAP_OPT_X_TLS_KEYFILE      | String        |
+| LDAP_OPT_X_TLS_PROTOCOL_MIN | Integer       |
+| LDAP_OPT_X_TLS_RANDOM_FILE  | String        |
+| LDAP_OPT_X_TLS_REQUIRE_CERT | Integer       |
+
+### Set Option Reference
+
+The supported options outlined here relate to the supported callable 'set' options supported within this API. The supported options are protocol specific `LDAP`/`SASL`/`TCP`/`TLS` and as such are outlined here separately. For further information on each of the options see [here](https://www.openldap.org/software/man.cgi?query=ldap_set_option&sektion=3&apropos=0&manpath=OpenLDAP+2.4-Release)
+
+#### `LDAP`
+
+| Option                      | Type          | Info        |
+|-----------------------------|---------------|-------------|
+| LDAP_OPT_CONNECT_ASYNC      | Integer/Long  | |
+| LDAP_OPT_DEBUG_LEVEL        | Integer/Long  | |
+| LDAP_OPT_DEREF              | Integer/Long  | Value can be one of `.ldap.LDAP_DEREF_NEVER`, `.ldap.LDAP_DEREF_SEARCHING`, `.ldap.LDAP_DEREF_FINDING` or `.ldap.LDAP_DEREF_ALWAYS`
+| LDAP_OPT_DIAGNOSTIC_MESSAGE | String/Symbol | |
+| LDAP_OPT_NETWORK_TIMEOUT    | Integer/Long  | Number of microseconds for timeout |
+| LDAP_OPT_MATCHED_DN         | String/Symbol | |
+| LDAP_OPT_PROTOCOL_VERSION   | Integer/Long  | |
+| LDAP_OPT_REFERRALS          | Integer/Long  | Value can be one of `.ldap.LDAP_OPT_ON` or `.ldap.LDAP_OPT_OFF` |
+| LDAP_OPT_RESULT_CODE        | Integer/Long  | |
+| LDAP_OPT_SIZELIMIT          | Integer/Long  | |
+| LDAP_OPT_TIMELIMIT          | Integer/Long  | |
+| LDAP_OPT_TIMEOUT            | Integer/Long  | Number of microseconds for timeout |
+
+#### `SASL`
+
+| Option                       | Type          |
+|------------------------------|---------------|
+| LDAP_OPT_X_SASL_MAXBUFSIZE   | Long          |
+| LDAP_OPT_X_SASL_NOCANON      | Integer/Long  |
+| LDAP_OPT_X_SASL_SECPROPS     | String/Symbol |
+| LDAP_OPT_X_SASL_SSF_EXTERNAL | Long          |
+| LDAP_OPT_X_SASL_SSF_MAX      | Long          |
+| LDAP_OPT_X_SASL_SSF_MIN      | Long          |
+
+#### `TCP`
+
+| Option                        | Type          | 
+|-------------------------------|---------------|
+| LDAP_OPT_X_KEEPALIVE_IDLE     | Integer/Long  |
+| LDAP_OPT_X_KEEPALIVE_PROBES   | Integer/Long  |
+| LDAP_OPT_X_KEEPALIVE_INTERVAL | Integer/Long  |
+
+#### `TLS`
+
+| Option                      | Type          |
+|-----------------------------|---------------|
+| LDAP_OPT_X_TLS_CACERTDIR    | String/Symbol |
+| LDAP_OPT_X_TLS_CACERTFILE   | String/Symbol |
+| LDAP_OPT_X_TLS_CERTFILE     | String/Symbol |
+| LDAP_OPT_X_TLS_CIPHER_SUITE | String/Symbol |
+| LDAP_OPT_X_TLS_CRLCHECK     | Integer/Long  |
+| LDAP_OPT_X_TLS_CRLFILE      | String/Symbol |
+| LDAP_OPT_X_TLS_DHFILE       | String/Symbol |
+| LDAP_OPT_X_TLS_KEYFILE      | String/Symbol |
+| LDAP_OPT_X_TLS_NEWCTX       | Integer/Long  |
+| LDAP_OPT_X_TLS_PROTOCOL_MIN | Integer/Long  |
+| LDAP_OPT_X_TLS_RANDOM_FILE  | String/Symbol |
+| LDAP_OPT_X_TLS_REQUIRE_CERT | Integer/Long  |
+
+
+## Error Code Reference
+
+### Success Code
+
+On successful execution of a function returning an LDAP error code the integer 0i will be returned. When passed to the function `.ldap.err2string` this will return `"Success"`
+
+### Protocol Codes
 
 These are all positive values. Reference IANA registered result codes [here](https://www.iana.org/assignments/ldap-parameters/ldap-parameters.xhtml#ldap-parameters-6)
 
-## API Error Codes
+### Error Codes
 
 These are all negative values.
 
@@ -277,4 +404,20 @@ These are all negative values.
 | -14  | LDAP_NO_RESULTS_RETURNED     | Indicates no results returned.                               |
 | -16  | LDAP_CLIENT_LOOP             | Indicates the library has detected a  loop  in  its processing. |
 | -17  | LDAP_REFERRAL_LIMIT_EXCEEDED | Indicates the referral limit has been exceeded.              |
-| -18  | LDAP_X_CONNECTING            | Indicates async connect attempt is ongoing.                  |
+| -18  | LDAP_X_CONNECTING            | Indicates that an async connect attempt is ongoing.          |
+
+
+## Security Mechanisms
+
+LDAP supports a range of security mechanisms as part of the bind call. Check with your LDAP server/admin what is supported for your system (often found in the root attribute named 'supportedSASLMechanisms').
+
+Most of these security mechanisms are performed externally, in separate code related to your security mechanism.
+
+For example,  
+
+* DIGEST_MD5 is initially performed by calling bind with no credentials, mech set to "DIGEST-MD5" and capturing the returned credential values from the server. Using the returned credentials to MD5 encode the user details, a second bind call is then made with the MD5 encoded details as the 'cred' parameter. This requires an additional MD5 library that is outside the scope of this interface (Ref: [example code](https://github.com/zheolong/melody-lib/blob/master/libldap5/sources/ldap/common/digest_md5.c)). 
+
+Other security mechanisms may operate in a similar manner
+
+* [GSSAPI](https://en.wikipedia.org/wiki/Generic_Security_Services_Application_Program_Interface) example [here](https://github.com/hajuuk/R7000/blob/master/ap/gpl/samba-3.0.13/source/libads/sasl.c).
+* [CRAM-MD5](https://en.wikipedia.org/wiki/CRAM-MD5) example [here](https://github.com/illumos/illumos-gate/blob/master/usr/src/lib/libldap5/sources/ldap/common/cram_md5.c).
