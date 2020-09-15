@@ -34,6 +34,7 @@ The [Fusion interfaces](fusion.md) to kdb+ are
 <tr><td>MQTT</td><td>[Q client for MQTT](mqtt/index.md)</td></tr>
 <tr><td>Prometheus-Exporter</td><td>[Exporter of kdb+ metrics to Prometheus](prom/exporter/index.md)</td></tr>
 <tr><td>Protobuf</td><td>[Protobuf](protobuf/index.md) ==new==</td></tr>
+<tr><td>LDAP</td><td>[Q client for LDAP](ldap/index.md) ==new==</td></tr>
 <tr><td>Python</td>
     <td>
 </i> [Using kdb+ within Python (PyQ)](pyq/index.md)<br/>
