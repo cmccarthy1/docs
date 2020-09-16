@@ -74,7 +74,7 @@ The addition of Sklearn models can be completed through the modification of a nu
     <pre><code class="language-q">BayesianRidge  |n_iter=100 200 300;tol=0.001 0.005 0.01</code></pre>
 
 
-### Keras models
+### Keras Models
 
 The addition of custom keras models is slightly more involved than that performed for scikit-learn models. The following steps show in their entirety the steps followed to add a custom regression model named `customreg` to the workflow.
 
@@ -121,7 +121,7 @@ The addition of custom keras models is slightly more involved than that performe
     <pre><code class="language-q">\d .automl
     i.keraslist:`regkeras`multikeras`binarykeras`customregkeras</code></pre>
 
-4.  Open the file `code/models/regmodels.txt` or `classmodels.txt` depending on use case and add a row associated with the new model.
+4.  Go to `code/models/models/` and open `regmodels.txt` or `classmodels.txt` depending on use case. Add a row associated with the new model.
 
     <pre><code class="language-txt">display-name    | model-type ; model-name ; seeded? ; problem-type
     ----------------|------------;------------;---------;-------------
@@ -132,3 +132,86 @@ The addition of custom keras models is slightly more involved than that performe
     `display-name` is used for display and saving purposes. This is the name that should be added to the `.automl.i.keraslist` in order to be excluded from grid-search.
 
     `model-name` should observe the naming convention used in step 1 for `[model-name]{fit/...}`.
+    
+### Pytorch Models
+
+Similarly to the keras models described above, the addition of pytorch is also more involved than that of the scikit-learn models. The following steps show in their entirety the steps followed to add a custom classification model named `Pytorch` to the workflow.
+
+1.  Similarly to keras above, go to `code/models/models/` and open `regmodels.txt` or `classmodels.txt` depending on the use case. Following the `display-name | model-type ; model-name ; seeded? ; problem-type` structure, add your pytorch model. In this classification example we would add the following to `classmodels.txt`:
+
+    <pre><code class="language-txt">Pytorch | pytorch ; torch ; seed ; torch
+    </code></pre>
+
+2.  Within the folder `code/models/lib_support/` there are two files associated with pytorch models - **torch.q** and **torch.p**. `torch.p` contains Python code required to define appropriate models and the code to run the model training iteratively, as shown in the below example:
+
+```python
+class classifier(nn.Module):
+
+    def __init__(self,input_dim, hidden_dim, dropout = 0.4):
+        super().__init__()
+
+        self.fc1 = nn.Linear(input_dim, hidden_dim)
+        self.fc2 = nn.Linear(hidden_dim, hidden_dim)
+        self.fc3 = nn.Linear(hidden_dim, 1)
+        self.dropout = nn.Dropout(p = dropout)
+
+
+    def forward(self,x):
+        x = self.dropout(F.relu(self.fc1(x)))
+        x = self.dropout(F.relu(self.fc2(x)))
+        x = self.fc3(x)
+
+        return x 
+
+def runmodel(model,optimizer,criterion,dataloader,n_epoch):
+    for epoch in range(n_epoch):
+        train_loss=0
+        for idx, data in enumerate(dataloader, 0):
+            inputs, labels = data
+            model.train()
+            optimizer.zero_grad()
+            outputs = model(inputs)
+            loss = criterion(outputs,labels.view(-1,1))
+            loss.backward()
+            optimizer.step()
+            train_loss += loss.item()/len(dataloader)
+    return model
+```
+
+`torch.q` contains q code which allows pytorch models to be run within the model pipeline. An example is shown below.
+
+```q
+\d .automl
+
+// import pytorch as torch
+npa    :.p.import[`numpy]`:array
+torch  :.p.import`torch
+optim  :.p.import`torch.optim
+dloader:.p.import[`torch.utils.data]`:DataLoader
+.p.set[`nn;nn:.p.import`torch.nn]
+.p.set[`F;.p.import`torch.nn.functional]
+
+torchmdl:{[d;s;mtype]
+  classifier:.p.get`classifier;
+  classifier[count first d[0]0;200]
+  }
+
+torchpredict:{[d;m]
+  d_x:torch[`:from_numpy][npa d[1]0][`:float][];
+  {(.p.wrap x)[`:detach][][`:numpy][][`:squeeze][]`}last torch[`:max][m d_x;1]`
+  }
+
+torchfit:{[d;m]
+  optimizer:optim[`:Adam][m[`:parameters][];pykwargs enlist[`lr]!enlist .9];
+  criterion:nn[`:BCEWithLogitsLoss][];
+  data_x:torch[`:from_numpy][npa d[0]0][`:float][];
+  data_y:torch[`:from_numpy][npa d[0]1][`:float][];
+  tt_xy:torch[`:utils.data][`:TensorDataset][data_x;data_y];
+  mdl:.p.get`runmodel;
+  pyinputs:pykwargs`batch_size`shuffle`num_workers!(count first d[0]0;1b;0);
+  mdl[m;optimizer;criterion;dloader[tt_xy;pyinputs];10|`int$count[d[0]0]%1000]
+  }
+
+i.torchlist:`Pytorch
+i.nnlist:i.keraslist,i.torchlist
+```
