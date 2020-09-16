@@ -254,6 +254,7 @@ configuration| :: @[;`xdata`ydata!(+`x`x1!(0.06165008 0.285799 0.6684724 0.91..
 // Delete the configuration node
 q)graph:.ml.delCfg[graph;`configuration]
 
+
 // Display the graph nodes 
 q)show graph.nodes
 nodeId|    function inputs outputs
@@ -383,6 +384,7 @@ nodeId  |    function                inputs            outputs
         | :: ::                      ::                ::
 srcNode | :: {x}                     (,`input)!,"!"    (,`srcName)!,"!"
 destNode| :: ![,`output]@[enlist]{x} (,`destName)!,"!" (,`output)!,"F" 
+
 
 // Generate node content to overwrite the function for srcNode
 q)updSrcInput:"!"
