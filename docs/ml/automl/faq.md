@@ -132,9 +132,9 @@ The addition of custom keras models is slightly more involved than that performe
 
     `model-name` should observe the naming convention used in step 1 for `[model-name]{fit/...}`.
     
-### Pytorch Models
+### PyTorch Models
 
-The procedure which must be followed to add a custom pytorch model to automl follows closely that outlined for the addition of keras models above. The following steps show in their entirety the steps followed to add a custom classification model named `Pytorch` to the workflow.
+The procedure which must be followed to add a custom PyTorch model to automl follows closely that outlined for the addition of keras models above. The following steps show in their entirety the steps followed to add a custom classification model named `Pytorch` to the workflow.
 
 1. Open the file to `classmodels.txt`/`regmodels.txt` in the folder `code/models/models/` depending on the problem type being tackled i.e. classification/regression respectively. In this example the model being added is a multi-class classification model.
 
@@ -149,11 +149,11 @@ The procedure which must be followed to add a custom pytorch model to automl fol
 	**Note:**
 	
 	* In the schema above, `classtorch`, in the 'model-name' column defines the prefix defining the `[model-name]{mdl/fit/predict}` functions which are retrieved from **pytorch.q**.
-	* The 'display-name' column is used for display and model saving purposes. This is also the name that should be added to the `.automl.i.torchlist` as outlined in step 3 below. This list ensures that the pytorch models are excluded from grid-search, functionality which is currently not supported.
+	* The 'display-name' column is used for display and model saving purposes. This is also the name that should be added to the `.automl.i.torchlist` as outlined in step 3 below. This list ensures that the PyTorch models are excluded from grid-search, functionality which is currently not supported.
 
-3.  Within the folder `code/models/lib_support/` there are two files associated with pytorch models - **torch.q** and **torch.p**. These files should contain the following information
-	* `torch.p` = Any Python code required to define the appropriate pytorch models.
-	* `torch.q` = The q functions which define the model, fit and predict functionality for any custom pytorch models. In addition to this the file contains a modifiable list `.automl.i.torchlist` which should be modified to include the `display-name` of the custom function as outlined in 2 above.
+3.  Within the folder `code/models/lib_support/` there are two files associated with PyTorch models - **torch.q** and **torch.p**. These files should contain the following information
+	* `torch.p` = Any Python code required to define the appropriate PyTorch models.
+	* `torch.q` = The q functions which define the model, fit and predict functionality for any custom PyTorch models. In addition to this the file contains a modifiable list `.automl.i.torchlist` which should be modified to include the `display-name` of the custom function as outlined in 2 above.
 
 
 ```python
@@ -191,9 +191,10 @@ def runmodel(model,optimizer,criterion,dataloader,n_epoch):
     return model
 ```
 
-`torch.q` contains q code which appropriately wraps a pytorch models such that it can be run within the model pipeline. The following wraps the pytorch functionality defined above into appropriately named q `model`, `fit` and `predict` functions.
+`torch.q` defined below contains q code which appropriately wraps a PyTorch model such that it can be run within the model pipeline. The following wraps the PyTorch functionality defined above into appropriately named q `model`, `fit` and `predict` functions.
 
 ```q
+$vi torch.q
 \d .automl
 
 npa    :.p.import[`numpy]`:array
