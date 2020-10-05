@@ -522,6 +522,10 @@ origd       | original values of input values before being differenciated
 origs       | original values to be used to transform seasonal differencing to original format
 pred_dict   | a dictionary containing information about the model used for fitting
 
+
+!!! Warning
+	When applying optimization algorithms in kdb+, subtracting small values from large to generate deltas to find the optimization direction may result in inconsistent results across operating systems. This is due to potential floating point precision differences at the machine level and issues with subtractions of floating point numbers more generally. These issues may be seen in the application of `.ml.ts.SARIMA` and `.ml.optimize.BFGS`. See [here](../../../../basics/precision) for more details on floating point precision.
+
 ```q
 q)timeSeries:100?10f
 q)exogVar:([]100?10f;100?1f)
@@ -585,6 +589,3 @@ q)exogFuture:([]10?1f;10?1f)
 q).ml.ts.SARIMA.predict[SARIMAmdl;exogFuture;10]
 4.120073 4.828971 5.943532 3.411156 4.342353 2.056176 4.707504 4.516458 6.316
 ```
-
-!!! Warning
-	A precision error may occur between results obtained on Linux/Mac/Windows operating systems due to rounding difference caused by `lsq` and the optimization function used with the SARIMA implementations. See [here](../../../../basics/precision) for more details
